@@ -1,0 +1,68 @@
+.footerBox{
+    background-color: rgb(0, 0, 56);
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 30px 0;
+}
+
+.componentsBox{
+    display: flex;
+    width: 80%;
+    padding: 10px 50px;
+    justify-content: space-between;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.componentsBox div{
+    width: 20%;
+    padding: 20px;
+    display: flex; 
+    flex-direction: column; 
+    color: white;
+    justify-content: center;
+}
+
+.logo img{
+    width: 200px;
+    height: 150px;
+}
+
+.logo p{
+    color: rgba(148, 147, 147, 0.591);
+}
+
+a{
+    color: white;
+    text-decoration: none;
+    transition: 0.4s;
+}
+
+li{
+    list-style: none;
+    padding: 15px 0; 
+}
+
+a:hover{
+    color:rgb(70, 70, 197)
+}
+
+hr{
+    width: 90%;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    margin: 20px 0;
+}
+
+.copyright p{
+    color: rgba(148, 147, 147, 0.591);
+    padding: 10px;
+}
+
+.copyright{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+}
