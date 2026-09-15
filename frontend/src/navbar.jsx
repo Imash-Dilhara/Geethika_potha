@@ -1,8 +1,15 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link , useLocation } from "react-router-dom";
 import './css/navbar.css';
 
 function Navbar(){
+
+    const location = useLocation();
+
+    let pageTitle = "Home";
+    if(location.pathname === "/about") pageTitle = "About";
+    else if(location.pathname === "/contact") pageTitle = "Contact";
+
     return(
         <div>
             <div className="bannerBox"> 
@@ -11,7 +18,7 @@ function Navbar(){
                         <img src="assets/logo-white.png" alt="HymnFlow logo"/>
                     </div>
                     <div className = "pageName">
-                        <h1 id = "pageName">Home</h1>
+                        <h1 id = "pageName">{pageTitle}</h1>
                     </div>
                     <div className="linksName">
                         <ul>

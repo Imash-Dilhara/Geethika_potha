@@ -18,7 +18,7 @@ function App(){
                 <Route path="/contact" element={<Contact />} />
             </Routes>
 
-            <Footer /> {/* Footer එක හැම තැනම පෙන්වීමට */}
+            <Footer />
         </BrowserRouter>
     );
 }
