@@ -1,22 +1,23 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import './css/navbar.css';
 
 function Navbar(){
     return(
         <div>
-            <div class="bannerBox"> 
-                <div class="bannerShadow">
-                    <div class="logoName">
-                        <img src="assets/logo-white.png" alt="HymnFlow logo" onclick="window.location.href='index.php'"/>
+            <div className="bannerBox"> 
+                <div className="bannerShadow">
+                    <div className="logoName">
+                        <img src="assets/logo-white.png" alt="HymnFlow logo"/>
                     </div>
-                    <div class = "pageName">
+                    <div className = "pageName">
                         <h1 id = "pageName">Home</h1>
                     </div>
-                    <div class="linksName">
+                    <div className="linksName">
                         <ul>
-                            <li><a href="">Home</a></li>
-                            <li>About</li>
-                            <li>Contact</li>
+                            <li><Link to = "/">Home</Link></li>
+                            <li><Link to = "/about">About</Link></li>
+                            <li><Link to = "/contact">Contact</Link></li>
                         </ul>
                     </div>
                 </div>
