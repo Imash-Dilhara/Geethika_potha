@@ -63,7 +63,7 @@ function Home(){
         
                 <div className="quickSection">
                     <div>
-                        <img src="assets/group-icon.png" alt="Group Icon"/>
+                        <img src="assets/hymns-icon.png" alt="Group Icon"/>
                         <h3>500+</h3>
                         <p>Hymns Available</p>
                     </div>

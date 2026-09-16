@@ -15,7 +15,7 @@ function Navbar(){
             <div className="bannerBox"> 
                 <div className="bannerShadow">
                     <div className="logoName">
-                        <img src="assets/logo-white.png" alt="HymnFlow logo"/>
+                        <Link to="/"><img src="assets/logo-white.png" alt="HymnFlow logo"/></Link>
                     </div>
                     <div className = "pageName">
                         <h1 id = "pageName">{pageTitle}</h1>
