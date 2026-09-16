@@ -1,0 +1,136 @@
+.contact_body{
+    padding: 100px 200px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.formBox{
+    width: 40%;
+    padding: 20px 50px;
+    border-radius: 15px;
+    border: none;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.315);
+    background-color: rgba(127, 127, 249, 0.263);
+    transition: 0.6s;
+}
+
+.formBox:hover{
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.534);
+    margin-top: -5px;
+}
+
+.formBox label{
+    font-size: 20px;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    /* color: white; */
+}
+
+.formBox input , .formBox textarea{
+    width: 90%;
+    font-size: 18px;
+    font-family: monospace;
+    padding: 10px 20px;
+    border-radius: 10px;
+    background-color: transparent;
+    color: rgba(9, 9, 68, 0.767);
+    border: 1px solid rgb(75, 75, 200);
+    margin-top: 5px;
+    cursor: pointer;
+    transition: 0.4s;
+}
+
+.formBox textarea{
+    height: 150px;
+    resize: none;
+}
+
+.formBox input:hover , .formBox textarea:hover{
+    background-color: rgba(75, 75, 200, 0.178);
+}
+
+.formBox input:focus , .formBox textarea:focus{
+    outline: none;
+    border:2px solid rgb(0, 0, 209);
+    box-shadow: 0 0 10px rgba(0, 0, 56, 0.4);
+    background-color: rgba(75, 75, 200, 0.178);
+}
+
+.buttonBox{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.buttonBox button{
+    width: 80%;
+    padding: 15px 0;
+    border-radius: 25px;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 20px;
+    cursor: pointer;
+    margin: 20px 0;
+    transition: 0.8s;
+}
+
+.buttonBox button img{
+    width: 30px;
+    height: 30px;
+}
+
+.buttonBox button:hover{
+    background-color: rgb(65, 65, 193);
+    box-shadow: 0 0 15px rgba(23, 23, 58, 0.648);
+    color: white;
+}
+
+.contactWithUsBox{
+    width: 35%;
+}
+
+.contactContent{
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.contactWithUsBox h3{
+    font-size: 20px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    color: rgb(76, 76, 133);
+    margin-bottom: -5px;
+}
+
+.contactContent p , .communityPara{
+    color: rgba(56, 55, 55, 0.785);
+    font-family: monospace;
+    font-size: 18px;
+}
+
+.contactContent img{
+    width: 30px;
+    height: 30px;
+}
+
+.socialMedia{
+    display: flex;
+    gap: 30px;
+    margin: 60px 0 10px 0;
+}
+
+.socialMedia img{
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    border-radius: 50%;
+    transition: 0.5s;
+}
+
+.socialMedia img:hover{
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.443);
+    margin-top: -10px;
+}
