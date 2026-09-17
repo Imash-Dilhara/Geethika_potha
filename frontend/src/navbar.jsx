@@ -9,7 +9,8 @@ function Navbar(){
     let pageTitle = "Home";
     if(location.pathname === "/about") pageTitle = "About";
     else if(location.pathname === "/contact") pageTitle = "Contact";
-
+    else if(location.pathname === "/addHymn") pageTitle = "Add Hymn";
+ 
     return(
         <div>
             <div className="bannerBox"> 

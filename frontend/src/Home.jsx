@@ -1,5 +1,6 @@
 import React from 'react';
 import './css/home.css';
+import { Link } from 'react-router-dom';
 
 function Home(){
     return(
@@ -13,11 +14,11 @@ function Home(){
                 </div>
                 <div className="sideBox">
                     <div className = "add">
-                        <div>
+                        <Link to="/addHymn"><div>
                             <h1 className = "boxName">Add Hymn</h1>
                             <p>"Contribute to our growing library by adding new hymns. Click here to input song details, lyrics, and make them available for everyone."</p>
                             <h3>Click Here</h3>
-                        </div>
+                        </div></Link>
                     </div>
                     <div className="left">
                         <div>

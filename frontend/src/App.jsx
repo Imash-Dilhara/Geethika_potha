@@ -5,6 +5,7 @@ import Footer from './footer.jsx';
 import Home from './Home.jsx';
 import About from './About.jsx';
 import Contact from './Contact.jsx';
+import AddHymn from "./AddHymn.jsx";
 import './css/App.css';
 
 function App(){
@@ -16,6 +17,7 @@ function App(){
                 <Route path="/" element={<Home />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/contact" element={<Contact />} />
+                <Route path="/addHymn" element={<AddHymn />} />
             </Routes>
 
             <Footer />

@@ -8,14 +8,14 @@ function Contact(){
                 <div className="formBox">
                     <h1 className='title'>Get In Touch</h1>
                     <form action="">
-                        <label htmlFor="">Name</label><br/>
-                        <input type="text" placeholder='Ex : Sunil De Silva' /><br /><br />
-                        <label htmlFor="">Email Address</label><br/>
-                        <input type="email" placeholder='Ex : sunil@example.com'/><br /><br />
-                        <label htmlFor="">Subject</label><br />
-                        <input type="text" placeholder='Enter the subject what you write'/><br /><br />
-                        <label htmlFor="">Message</label><br />
-                        <textarea name="" id="" placeholder='Write message here'></textarea><br /><br />
+                        <label htmlFor="senderName">Name</label><br/>
+                        <input id='senderName' type="text" placeholder='Ex : Sunil De Silva' /><br /><br />
+                        <label htmlFor="senderEmail">Email Address</label><br/>
+                        <input id='senderEmail' type="email" placeholder='Ex : sunil@example.com'/><br /><br />
+                        <label htmlFor="subject">Subject</label><br />
+                        <input id='subject' type="text" placeholder='Enter the subject what you write'/><br /><br />
+                        <label htmlFor="senderMsg">Message</label><br />
+                        <textarea name="senderMsg" id="senderMsg" placeholder='Write message here'></textarea><br /><br />
                         <div className='buttonBox'>
                             <button><img src="assets/email.png" alt="Message Send Image" />Send Message</button>
                         </div>
