@@ -9,7 +9,7 @@ function Navbar(){
     const [isRegisterOpen, setIsRegisterOpen] = useState(false);
 
     const [isLogin , setIsLogin] = useState(false);
-    const [userName , setUserName] = useState("Geethika");
+    const [userName , setUserName] = useState("");
 
     let pageTitle = "Home";
     if(location.pathname === "/about") pageTitle = "About";
@@ -51,26 +51,47 @@ function Navbar(){
             </div>
 
             {isRegisterOpen && (
-                <div className="modalBox">
-                    <div className="modalContent">
-                        <h2>Create an Account</h2>
+                <div className="modalBox" onClick={() => setIsRegisterOpen(false)}>
+                    <div className="modalContent" onClick={(e) => e.stopPropagation()}>
+                        <div className="modalHeader">
+                            <h2>Create an Account</h2>
+                            <button 
+                                className="closeBtn" 
+                                onClick={() => setIsRegisterOpen(false)}
+                            >
+                                ✕
+                            </button>
+                        </div>
                         <form onSubmit={(e) => {
                             e.preventDefault();
-                            setIsLogin(true);
-                            setIsRegisterOpen(false);
+                            setIsLogin(true); 
+                            setIsRegisterOpen(false); 
                         }}>
-                            <input type="text" placeholder="User First name" required />
-                            <input type="text" placeholder="User Last name" />
-                            <input type="email" placeholder="Email" required />
-                            <input type="password" placeholder="Password" required />
-                            <button type="submit" className="submit-btn">Register</button>
+                            <div className="form-group">
+                                <input 
+                                    id="userFname" 
+                                    type="text" 
+                                    placeholder="User First Name"
+                                    onChange={(e) => setUserName(e.target.value)} 
+                                    required /><br />
+                                <small></small>
+                            </div>
+                            <div className="form-group">
+                                <input id="userLname" type="text" placeholder="User Last Name" />
+                            </div>
+                            <div className="form-group">
+                                <input id="userEmail" type="email" placeholder="Email" required /><br />
+                                <small></small>
+                            </div>
+                            <div className="form-group">
+                                <input id="userPass" type="password" placeholder="Password" required /><br />
+                                <small></small>
+                            </div>
+                            <div className="formSubBtn">
+                                <button type="submit" className="submit-btn">Register</button>
+                            </div>
                         </form>
-                        <button 
-                            className="close-btn" 
-                            onClick={() => setIsRegisterOpen(false)}
-                        >
-                            ✕
-                        </button>
+                    
                     </div>
                 </div>
             )}
