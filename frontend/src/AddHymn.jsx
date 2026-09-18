@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import './css/addHymn.css';
 
 function AddHymn() { 
@@ -47,6 +48,9 @@ function AddHymn() {
                             </button>
                         </div>
                     </form>
+                    <div className='back-to-home-box'>
+                        <Link to='/'><button>Back to Home</button></Link>
+                    </div>
                 </div>
             </div>
         </>

@@ -1,60 +1,102 @@
-import React ,{ useState } from "react";
-import { Link , useLocation } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { validateRegister, validateLogin } from "./utils/creat-account-validation";
 import './css/navbar.css';
 
-function Navbar(){
-
+function Navbar() {
     const location = useLocation();
 
     const [isRegisterOpen, setIsRegisterOpen] = useState(false);
-    const [haveAccount, setHaveAccount] = useState(false);
+    const [haveAccount, setHaveAccount] = useState(true);
     const [isClickAvatar, setIsClickAvatar] = useState(false);
-    const [isLogin , setIsLogin] = useState(false);
-    const [userName , setUserName] = useState("");
+    const [isLogin, setIsLogin] = useState(false);
+    const [userName, setUserName] = useState("");
+
+    const [formData, setFormData] = useState({
+        firstName: "",
+        lastName: "",
+        email: "",
+        password: "",
+        confirmPassword: ""
+    });
+
+    const [errors, setErrors] = useState({});
 
     let registrationTitle = haveAccount ? "Sign In" : "Create an Account";
 
     let pageTitle = "Home";
-    if(location.pathname === "/about") pageTitle = "About";
-    else if(location.pathname === "/contact") pageTitle = "Contact";
-    else if(location.pathname === "/addHymn") pageTitle = "Add Hymn";
+    if (location.pathname === "/about") pageTitle = "About";
+    else if (location.pathname === "/contact") pageTitle = "Contact";
+    else if (location.pathname === "/addHymn") pageTitle = "Add Hymn";
 
     const firstLetter = userName ? userName.charAt(0).toUpperCase() : "";
- 
-    return(
+
+    const handleChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
+
+    const handleRegisterSubmit = (e) => {
+        e.preventDefault();
+        const validationErrors = validateRegister(formData);
+        setErrors(validationErrors);
+
+        if (Object.keys(validationErrors).length === 0) {
+            setUserName(formData.firstName);
+            setIsLogin(true);
+            setIsRegisterOpen(false);
+            setErrors({});
+        }
+    };
+
+    const handleLoginSubmit = (e) => {
+        e.preventDefault();
+        const validationErrors = validateLogin(formData);
+        setErrors(validationErrors);
+
+        if (Object.keys(validationErrors).length === 0) {
+            setUserName(formData.firstName);
+            setIsLogin(true);
+            setIsRegisterOpen(false);
+            setErrors({});
+        }
+    };
+
+    return (
         <div>
             <div className="bannerBox"> 
                 <div className="bannerShadow">
                     <div className="logoName">
                         <Link to="/"><img src="assets/logo-white.png" alt="HymnFlow logo"/></Link>
                     </div>
-                    <div className = "pageName">
-                        <h1 id = "pageName">{pageTitle}</h1>
+                    <div className="pageName">
+                        <h1 id="pageName">{pageTitle}</h1>
                     </div>
                     <div className="linksName">
                         <ul>
-                            <li className="navLink"><Link to = "/">Home</Link></li>
-                            <li className="navLink"><Link to = "/about">About</Link></li>
-                            <li className="navLink"><Link to = "/contact">Contact</Link></li>
+                            <li className="navLink"><Link to="/">Home</Link></li>
+                            <li className="navLink"><Link to="/about">About</Link></li>
+                            <li className="navLink"><Link to="/contact">Contact</Link></li>
                             <li>
                                 {isLogin ? (
                                     <div 
                                         className="userAvatar" 
                                         title={userName} 
                                         onClick={() => setIsClickAvatar(true)}>
-                                            {firstLetter}
+                                        {firstLetter}
                                     </div>
                                 ):(
                                     <button 
                                         className="registerBtn" 
-                                        onClick={() => setIsRegisterOpen(true)}>
-                                            Register
+                                        onClick={() => {
+                                            setIsRegisterOpen(true);
+                                            setErrors({});
+                                        }}>
+                                        Register
                                     </button>
                                 )}
                             </li>
                         </ul>
                     </div>
-                    
                 </div>
             </div>
 
@@ -70,69 +112,107 @@ function Navbar(){
                                 ✕
                             </button>
                         </div>
-                        {haveAccount ? (<>
-                            <form onSubmit={(e) => {
-                                e.preventDefault();
-                                setIsLogin(true); 
-                                setIsRegisterOpen(false); 
-                            }}>
+
+                        {!haveAccount ? (
+                            <form id="register-user-form" onSubmit={handleRegisterSubmit} noValidate>
                                 <div className="form-group">
                                     <input 
+                                        name="firstName"
                                         id="userFname" 
                                         type="text" 
                                         placeholder="User First Name"
-                                        onChange={(e) => setUserName(e.target.value)} 
-                                        required /><br />
-                                    <small></small>
+                                        value={formData.firstName}
+                                        onChange={handleChange} 
+                                    /><br />
+                                    <small>{errors.firstName}</small>
                                 </div>
                                 <div className="form-group">
-                                    <input id="userLname" type="text" placeholder="User Last Name" />
+                                    <input 
+                                        name="lastName"
+                                        id="userLname" 
+                                        type="text" 
+                                        placeholder="User Last Name"
+                                        value={formData.lastName}
+                                        onChange={handleChange} 
+                                    />
                                 </div>
                                 <div className="form-group">
-                                    <input id="userEmail" type="email" placeholder="Email" required /><br />
-                                    <small></small>
+                                    <input 
+                                        name="email"
+                                        id="userEmail" 
+                                        type="email" 
+                                        placeholder="Email"
+                                        value={formData.email}
+                                        onChange={handleChange}
+                                    /><br />
+                                    <small>{errors.email}</small>
                                 </div>
                                 <div className="form-group">
-                                    <input id="userPass" type="password" placeholder="Password" required /><br />
-                                    <small></small>
+                                    <input 
+                                        name="password"
+                                        id="userPass" 
+                                        type="password" 
+                                        placeholder="Password"
+                                        onChange={handleChange} 
+                                    /><br />
+                                    <small>{errors.password}</small>
                                 </div>
                                 <div className="form-group">
-                                    <input id="userComfirmPass" type="password" placeholder="Confirm Password" required /><br />
-                                    <small></small>
+                                    <input 
+                                        name="confirmPassword"
+                                        id="userConfirmPass" 
+                                        type="password" 
+                                        placeholder="Confirm Password"
+                                        onChange={handleChange} 
+                                    /><br />
+                                    <small>{errors.confirmPassword}</small>
                                 </div>
                                 <div className="formSubBtn">
                                     <button type="submit" className="submit-btn">Register</button>
-                                    <p className="accHave" onClick={() => setHaveAccount(!haveAccount)}>Already have an account?</p>
+                                    <p className="accHave" 
+                                        onClick={() => { 
+                                            setHaveAccount(!haveAccount);
+                                            setErrors({}); 
+                                        }}
+                                    >Already have an account?
+                                    </p>
                                 </div>
                             </form>
-                        </>) : (
-                            <>
-                                <form onSubmit={(e) => {
-                                e.preventDefault();
-                                setIsLogin(true); 
-                                setIsRegisterOpen(false); 
-                                }}>
-                                    <div className="form-group">
-                                        <input 
-                                            id="userFname" 
-                                            type="text" 
-                                            placeholder="User First Name"
-                                            onChange={(e) => setUserName(e.target.value)} 
-                                            required /><br />
-                                        <small></small>
-                                    </div>
-                                    <div className="form-group">
-                                        <input id="userPass" type="password" placeholder="Password" required /><br />
-                                        <small></small>
-                                    </div>
-                                    <div className="formSubBtn">
-                                        <button type="submit" className="submit-btn">Log In</button>
-                                        <p className="accHave" onClick={() => setHaveAccount(!haveAccount)}>Create an account?</p>
-                                    </div>
-                                </form>
-                            </>
+                        ) : (
+                            <form onSubmit={handleLoginSubmit}>
+                                <div className="form-group">
+                                    <input 
+                                        name="firstName"
+                                        id="userFname" 
+                                        type="text" 
+                                        placeholder="User First Name"
+                                        value={formData.firstName}
+                                        onChange={handleChange} 
+                                    /><br />
+                                    <small>{errors.firstName}</small>
+                                </div>
+                                <div className="form-group">
+                                    <input 
+                                        name="password"
+                                        id="userPass" 
+                                        type="password" 
+                                        placeholder="Password"
+                                        onChange={handleChange} 
+                                    /><br />
+                                    <small>{errors.password}</small>
+                                </div>
+                                <div className="formSubBtn">
+                                    <button type="submit" className="submit-btn">Log In</button>
+                                    <p 
+                                        className="accHave" 
+                                        onClick={() => { 
+                                            setHaveAccount(!haveAccount); 
+                                            setErrors({}); 
+                                        }}>Create an account?
+                                    </p>
+                                </div>
+                            </form>
                         )}
-                    
                     </div>
                 </div>
             )}
@@ -140,37 +220,28 @@ function Navbar(){
             {isClickAvatar && (
                 <div className="avatarBox" onClick={() => setIsClickAvatar(false)}>
                     <div className="avatarContent" onClick={(e) => e.stopPropagation()}>
-                        <button 
-                                className="closeBtn" 
-                                onClick={() => setIsClickAvatar(false)}
-                            >
-                                ✕
-                            </button>
+                        <button className="closeBtn" onClick={() => setIsClickAvatar(false)}>✕</button>
                         <h1 className="avatarHeader">Hello {userName},</h1>
                         <div className="avatar-content-box">
-                            <img src="assets/profile-icon.png" alt="Log out Icon"/>
-                            <p>
-                                Viwe Profile
-                            </p>
+                            <img src="assets/profile-icon.png" alt="Profile Icon"/>
+                            <p>View Profile</p>
                         </div>
                         <div 
                             className="avatar-content-box"
-                            onClick={()=>(
-                                setIsRegisterOpen(false),
-                                setIsLogin(false),
-                                setIsClickAvatar(false) 
-                            )}
+                            onClick={() => {
+                                setIsRegisterOpen(false);
+                                setIsLogin(false);
+                                setIsClickAvatar(false);
+                                setHaveAccount(true);
+                                setUserName("");
+                            }}
                         >
                             <img src="assets/logout-icon.png" alt="Log out Icon" />
-                            <p>
-                                Log Out
-                            </p>
+                            <p>Log Out</p>
                         </div>
                     </div>
-                    <div className="clickBox"></div>
                 </div>
             )}
-
         </div>
     );
 }
