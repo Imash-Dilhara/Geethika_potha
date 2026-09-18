@@ -7,9 +7,12 @@ function Navbar(){
     const location = useLocation();
 
     const [isRegisterOpen, setIsRegisterOpen] = useState(false);
-
+    
+    const [haveAccount, setHaveAccount] = useState(false);
     const [isLogin , setIsLogin] = useState(false);
     const [userName , setUserName] = useState("");
+
+    let registrationTitle = haveAccount ? "Sign In" : "Create an Account";
 
     let pageTitle = "Home";
     if(location.pathname === "/about") pageTitle = "About";
@@ -54,7 +57,7 @@ function Navbar(){
                 <div className="modalBox" onClick={() => setIsRegisterOpen(false)}>
                     <div className="modalContent" onClick={(e) => e.stopPropagation()}>
                         <div className="modalHeader">
-                            <h2>Create an Account</h2>
+                            <h2>{registrationTitle}</h2>
                             <button 
                                 className="closeBtn" 
                                 onClick={() => setIsRegisterOpen(false)}
@@ -62,35 +65,68 @@ function Navbar(){
                                 ✕
                             </button>
                         </div>
-                        <form onSubmit={(e) => {
-                            e.preventDefault();
-                            setIsLogin(true); 
-                            setIsRegisterOpen(false); 
-                        }}>
-                            <div className="form-group">
-                                <input 
-                                    id="userFname" 
-                                    type="text" 
-                                    placeholder="User First Name"
-                                    onChange={(e) => setUserName(e.target.value)} 
-                                    required /><br />
-                                <small></small>
-                            </div>
-                            <div className="form-group">
-                                <input id="userLname" type="text" placeholder="User Last Name" />
-                            </div>
-                            <div className="form-group">
-                                <input id="userEmail" type="email" placeholder="Email" required /><br />
-                                <small></small>
-                            </div>
-                            <div className="form-group">
-                                <input id="userPass" type="password" placeholder="Password" required /><br />
-                                <small></small>
-                            </div>
-                            <div className="formSubBtn">
-                                <button type="submit" className="submit-btn">Register</button>
-                            </div>
-                        </form>
+                        {!haveAccount ? (<>
+                            <form onSubmit={(e) => {
+                                e.preventDefault();
+                                setIsLogin(true); 
+                                setIsRegisterOpen(false); 
+                            }}>
+                                <div className="form-group">
+                                    <input 
+                                        id="userFname" 
+                                        type="text" 
+                                        placeholder="User First Name"
+                                        onChange={(e) => setUserName(e.target.value)} 
+                                        required /><br />
+                                    <small></small>
+                                </div>
+                                <div className="form-group">
+                                    <input id="userLname" type="text" placeholder="User Last Name" />
+                                </div>
+                                <div className="form-group">
+                                    <input id="userEmail" type="email" placeholder="Email" required /><br />
+                                    <small></small>
+                                </div>
+                                <div className="form-group">
+                                    <input id="userPass" type="password" placeholder="Password" required /><br />
+                                    <small></small>
+                                </div>
+                                <div className="form-group">
+                                    <input id="userComfirmPass" type="password" placeholder="Confirm Password" required /><br />
+                                    <small></small>
+                                </div>
+                                <div className="formSubBtn">
+                                    <button type="submit" className="submit-btn">Register</button>
+                                    <p className="accHave" onClick={() => setHaveAccount(true)}>Already have an account?</p>
+                                </div>
+                            </form>
+                        </>) : (
+                            <>
+                                <form onSubmit={(e) => {
+                                e.preventDefault();
+                                setIsLogin(true); 
+                                setIsRegisterOpen(false); 
+                                }}>
+                                    <div className="form-group">
+                                        <input 
+                                            id="userFname" 
+                                            type="text" 
+                                            placeholder="User First Name"
+                                            onChange={(e) => setUserName(e.target.value)} 
+                                            required /><br />
+                                        <small></small>
+                                    </div>
+                                    <div className="form-group">
+                                        <input id="userPass" type="password" placeholder="Password" required /><br />
+                                        <small></small>
+                                    </div>
+                                    <div className="formSubBtn">
+                                        <button type="submit" className="submit-btn">Log In</button>
+                                        <p className="accHave" onClick={() => setHaveAccount(false)}>Create an account?</p>
+                                    </div>
+                                </form>
+                            </>
+                        )}
                     
                     </div>
                 </div>
