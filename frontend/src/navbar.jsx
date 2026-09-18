@@ -7,8 +7,8 @@ function Navbar(){
     const location = useLocation();
 
     const [isRegisterOpen, setIsRegisterOpen] = useState(false);
-    
     const [haveAccount, setHaveAccount] = useState(false);
+    const [isClickAvatar, setIsClickAvatar] = useState(false);
     const [isLogin , setIsLogin] = useState(false);
     const [userName , setUserName] = useState("");
 
@@ -38,7 +38,12 @@ function Navbar(){
                             <li className="navLink"><Link to = "/contact">Contact</Link></li>
                             <li>
                                 {isLogin ? (
-                                    <div className="userAvatar" title={userName}>{firstLetter}</div>
+                                    <div 
+                                        className="userAvatar" 
+                                        title={userName} 
+                                        onClick={() => setIsClickAvatar(true)}>
+                                            {firstLetter}
+                                    </div>
                                 ):(
                                     <button 
                                         className="registerBtn" 
@@ -65,7 +70,7 @@ function Navbar(){
                                 ✕
                             </button>
                         </div>
-                        {!haveAccount ? (<>
+                        {haveAccount ? (<>
                             <form onSubmit={(e) => {
                                 e.preventDefault();
                                 setIsLogin(true); 
@@ -97,7 +102,7 @@ function Navbar(){
                                 </div>
                                 <div className="formSubBtn">
                                     <button type="submit" className="submit-btn">Register</button>
-                                    <p className="accHave" onClick={() => setHaveAccount(true)}>Already have an account?</p>
+                                    <p className="accHave" onClick={() => setHaveAccount(!haveAccount)}>Already have an account?</p>
                                 </div>
                             </form>
                         </>) : (
@@ -122,13 +127,47 @@ function Navbar(){
                                     </div>
                                     <div className="formSubBtn">
                                         <button type="submit" className="submit-btn">Log In</button>
-                                        <p className="accHave" onClick={() => setHaveAccount(false)}>Create an account?</p>
+                                        <p className="accHave" onClick={() => setHaveAccount(!haveAccount)}>Create an account?</p>
                                     </div>
                                 </form>
                             </>
                         )}
                     
                     </div>
+                </div>
+            )}
+
+            {isClickAvatar && (
+                <div className="avatarBox" onClick={() => setIsClickAvatar(false)}>
+                    <div className="avatarContent" onClick={(e) => e.stopPropagation()}>
+                        <button 
+                                className="closeBtn" 
+                                onClick={() => setIsClickAvatar(false)}
+                            >
+                                ✕
+                            </button>
+                        <h1 className="avatarHeader">Hello {userName},</h1>
+                        <div className="avatar-content-box">
+                            <img src="assets/profile-icon.png" alt="Log out Icon"/>
+                            <p>
+                                Viwe Profile
+                            </p>
+                        </div>
+                        <div 
+                            className="avatar-content-box"
+                            onClick={()=>(
+                                setIsRegisterOpen(false),
+                                setIsLogin(false),
+                                setIsClickAvatar(false) 
+                            )}
+                        >
+                            <img src="assets/logout-icon.png" alt="Log out Icon" />
+                            <p>
+                                Log Out
+                            </p>
+                        </div>
+                    </div>
+                    <div className="clickBox"></div>
                 </div>
             )}
 

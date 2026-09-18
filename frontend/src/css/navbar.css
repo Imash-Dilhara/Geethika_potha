@@ -3,6 +3,7 @@
     background-size: cover;
     background-position: bottom;
     background-repeat: no-repeat;
+    position: relative;
 }
 
 .bannerShadow{
@@ -132,6 +133,18 @@
     align-items: center;
     justify-content: center;
     z-index: 1000;
+    animation: slideDown 0.3s ease-in-out forwards;
+}
+
+@keyframes slideDown {
+    0% {
+        opacity: 0;
+        transform: translateY(-25px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .modalContent{
@@ -229,4 +242,85 @@
 .accHave:hover{
     color: rgb(0, 206, 0);
     text-decoration: underline;
+}
+
+small{
+    color: red;
+    font-family: monospace;
+}
+
+.avatarBox{
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-start;
+    z-index: 1000;
+}
+
+.avatarContent{
+    position: relative;
+    top: 140px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.183);
+    background-color: rgb(147, 147, 255);
+    padding: 20px 50px;
+    width: 20%;
+    z-index: 500;
+    animation: slideDown 0.5s ease-in-out forwards;
+}
+
+@keyframes slideDown {
+    0% {
+        opacity: 0;
+        transform: translateY(-25px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.avatarHeader{
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.clickBox{
+    position: fixed;
+    background-color: transparent;
+    width: 100%;
+    height: 100%;
+}
+
+.avatar-content-box{
+    width: 100%;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    transition: 0.5s;
+    cursor: pointer;
+    border: 2px solid transparent;
+    border-left: 0;
+    border-right: 0;
+}
+
+.avatar-content-box:hover{
+    border-color:rgba(40, 40, 146, 0.537);  
+}
+
+.avatar-content-box:hover p{
+    color: white;
+    font-weight: bold;
+}
+
+.avatar-content-box img{
+    width: 30px;
+    height: 30px;
+    transition: 0.5s;
+}
+
+.avatar-content-box p{
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    transition:  0.5s;
 }
