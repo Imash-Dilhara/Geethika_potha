@@ -46,3 +46,17 @@ export const validateLogin = (formData) => {
 
     return errors;
 };
+
+export const validationAddHymn = (formData , file) => {
+    let errors = {};
+
+    if(!formData.title.trim()){
+        errors.title = "Hymn title required.";
+    }
+
+    if(!file){
+        errors.pdf = "Please upload a PDF hymn file";
+    }
+
+    return errors;
+};

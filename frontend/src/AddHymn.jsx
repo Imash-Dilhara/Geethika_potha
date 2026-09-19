@@ -1,14 +1,44 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { validationAddHymn } from './utils/creat-account-validation';
 import './css/addHymn.css';
 
 function AddHymn() { 
 
     const [file, setFile] = useState(null);
 
+    const [formData , setFormData] = useState({
+        title : '',
+        firstName: '',
+        lastName:''
+    });
+
+    const [errors , setErrors] = useState({});
+
     const handleFileChange = (e) => {
         if (e.target.files && e.target.files[0]) {
             setFile(e.target.files[0]);
+        }
+    };
+
+    const handleChange = (e) => {
+        setFormData({...formData , [e.target.name]:e.target.value});
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        const validationError = validationAddHymn(formData , file);
+        setErrors(validationError);
+
+        if(Object.keys(validationError).length === 0){
+            console.log("Form submitted successfully!", { formData, file });
+            setErrors({});
+            setFormData({
+                title:'',
+                firstName:'',
+                lastName:''
+            });
+            setFile(null);
         }
     };
 
@@ -17,15 +47,18 @@ function AddHymn() {
             <div className="addHymnFormBox">
                 <div className='gradientBox'>
                     <h1>Create and Publish New Hymn</h1>
-                    <form action="" className='addHymnForm'>
-                        <label htmlFor="hymnTitle">Hymn Title : </label>
-                        <input id='hymnTitle' type="text" placeholder='Hymn name type here'/>
+                    <form className='addHymnForm' onSubmit={handleSubmit} noValidate>
+                        <label htmlFor="title">Hymn Title : </label>
+                        <input name='title' id='hymnTitle' type="text" value={formData.title} onChange={handleChange} placeholder='Hymn name type here'/>
+                        <small>{errors.title}</small>
                         
                         <label htmlFor="pdfFile">Choose the pdf file :</label>
                         <div className="uploadFileBox">
                             <input 
+                                name='pdf'
                                 type="file" 
                                 id="pdfFile" 
+                                accept='.pdf'
                                 className="actual-file-input" 
                                 onChange={handleFileChange} 
                             />
@@ -35,14 +68,15 @@ function AddHymn() {
                             
                             <span>{file ? file.name : 'No file chosen'}</span>
                         </div>
+                        <small>{errors.pdf}</small>
 
                         <label htmlFor="singerFname">Singer : </label>
                         <div className='singerNameBox'>
-                            <input id='singerFname' type="text" placeholder='First name type here'/>
-                            <input id='singerLname' type="text" placeholder='Last name type here'/>
+                            <input name='firstName' id='singerFname' type="text" onChange={handleChange} placeholder='First name type here'/>
+                            <input name='lastName' id='singerLname' type="text" onChange={handleChange} placeholder='Last name type here'/>
                         </div>
                         <div className="addButton">
-                            <button>
+                            <button type="submit">
                                 <img src="assets/save-icon-white.png" alt="Save Icon" />
                                 Add Hymn
                             </button>

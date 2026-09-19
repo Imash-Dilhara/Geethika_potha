@@ -166,3 +166,8 @@
     background-color: #001845;
     color: white;
 }
+
+small{
+    color: red;
+    font-family: monospace;
+}
