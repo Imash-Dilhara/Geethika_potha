@@ -6,12 +6,14 @@ import Home from './Home.jsx';
 import About from './About.jsx';
 import Contact from './Contact.jsx';
 import AddHymn from "./AddHymn.jsx";
+import ScrollToTop from "./ScrollToTop.jsx";
 import './css/App.css';
 
 function App(){
     return(
         <BrowserRouter>
             <Navbar />
+            <ScrollToTop />
 
             <Routes>
                 <Route path="/" element={<Home />} />
