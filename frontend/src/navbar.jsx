@@ -17,7 +17,9 @@ function Navbar() {
         lastName: "",
         email: "",
         password: "",
-        confirmPassword: ""
+        confirmPassword: "",
+        userEmail: "",
+        userPassword: ""
     });
 
     const [errors, setErrors] = useState({});
@@ -31,20 +33,52 @@ function Navbar() {
 
     const firstLetter = userName ? userName.charAt(0).toUpperCase() : "";
 
+    //Login
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    const handleRegisterSubmit = (e) => {
+    //Submit
+    const handleRegisterSubmit = async(e) => {
         e.preventDefault();
         const validationErrors = validateRegister(formData);
         setErrors(validationErrors);
 
         if (Object.keys(validationErrors).length === 0) {
-            setUserName(formData.firstName);
-            setIsLogin(true);
-            setIsRegisterOpen(false);
-            setErrors({});
+            try{
+                const response = await fetch('http://localhost:5000/api/register',{
+                    method: 'POST',
+                    headers: {
+                        'Content-type':'application/json'
+                    },
+                    body: JSON.stringify({
+                        fname: formData.firstName,
+                        lname: formData.lastName,
+                        email: formData.email,
+                        password: formData.password
+                    })
+                });
+
+                const data = await response.json();
+
+                if(response.ok){
+                    alert(data.message);
+                    setUserName(formData.firstName);
+                    setIsLogin(true);
+                    setIsRegisterOpen(false);
+                    setErrors({});
+
+                    setFormData({
+                        password: "",
+                        confirmPassword: ""
+                    });
+                }else{
+                    alert(data.error || "Registration failed!");
+                }
+            }catch(e){
+                console.log("Error connecting to server : " , e);
+                alert("Server error. Please try again leter.");
+            }
         }
     };
 
@@ -154,6 +188,7 @@ function Navbar() {
                                         type="password" 
                                         placeholder="Password"
                                         onChange={handleChange} 
+                                        value={formData.password}
                                     /><br />
                                     <small>{errors.password}</small>
                                 </div>
@@ -163,7 +198,8 @@ function Navbar() {
                                         id="userConfirmPass" 
                                         type="password" 
                                         placeholder="Confirm Password"
-                                        onChange={handleChange} 
+                                        onChange={handleChange}
+                                        value={formData.confirmPassword}
                                     /><br />
                                     <small>{errors.confirmPassword}</small>
                                 </div>
@@ -179,17 +215,17 @@ function Navbar() {
                                 </div>
                             </form>
                         ) : (
-                            <form onSubmit={handleLoginSubmit}>
+                            <form onSubmit={handleLoginSubmit} noValidate>
                                 <div className="form-group">
                                     <input 
-                                        name="firstName"
-                                        id="userFname" 
-                                        type="text" 
-                                        placeholder="User First Name"
-                                        value={formData.firstName}
+                                        name="userEmail"
+                                        id="userEmail" 
+                                        type="email" 
+                                        placeholder="User email"
+                                        value={formData.userEmail}
                                         onChange={handleChange} 
                                     /><br />
-                                    <small>{errors.firstName}</small>
+                                    <small>{errors.email}</small>
                                 </div>
                                 <div className="form-group">
                                     <input 
@@ -198,6 +234,7 @@ function Navbar() {
                                         type="password" 
                                         placeholder="Password"
                                         onChange={handleChange} 
+                                        value={formData.password}
                                     /><br />
                                     <small>{errors.password}</small>
                                 </div>

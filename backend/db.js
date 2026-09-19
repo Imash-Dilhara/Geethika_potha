@@ -12,7 +12,7 @@ db.connect((e) => {
         console.error('Error of the connected with database : ' , e);
         return;
     }
-    console.logo('Connected with Database successfuly');
+    console.log('Connected with Database successfuly');
 });
 
 module.exports = db;
