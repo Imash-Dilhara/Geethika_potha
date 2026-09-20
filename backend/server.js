@@ -8,10 +8,9 @@ app.use(cors({
     credentials: true
 }));
 
-
-//Register
 app.use(express.json());
 
+//Register
 app.post('/api/register', async (req, res) => {
     const { fname, lname, email, password } = req.body;
 
@@ -33,3 +32,45 @@ app.post('/api/register', async (req, res) => {
     });
 });
 
+//Login
+app.post('/api/login' , (req,res) => {
+    const {email , password} = req.body;
+
+    const sql = "SELECT * FROM register WHERE email = ?";
+    db.query(sql , [email] , async(e ,result) => {
+        if(e){
+            return res.status(500).json({
+                success:false,
+                message:'Database Error!'
+            });
+        }
+
+        if(result.length === 0){
+            return res.status(401).json({
+                success:false,
+                message:'Invalid email or password!'
+            });
+        }
+
+        const user = result[0];
+
+        const isPasswordMatch = (password === user.password);
+
+        if(!isPasswordMatch){
+            return res.status(401).json({
+                success: false,
+                message: 'Invalid email or password'
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            message: 'Login successful!',
+            user:{id:user.id , name:user.fname, email:user.email}
+        });
+    });
+});
+
+app.listen(5000 , () => {
+    console.log("Server is running");
+});

@@ -33,7 +33,6 @@ function Navbar() {
 
     const firstLetter = userName ? userName.charAt(0).toUpperCase() : "";
 
-    //Login
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
@@ -66,6 +65,7 @@ function Navbar() {
                     setUserName(formData.firstName);
                     setIsLogin(true);
                     setIsRegisterOpen(false);
+                    setHaveAccount(true);
                     setErrors({});
 
                     setFormData({
@@ -82,16 +82,48 @@ function Navbar() {
         }
     };
 
-    const handleLoginSubmit = (e) => {
+    //Login
+    const handleLoginSubmit = async(e) => {
         e.preventDefault();
         const validationErrors = validateLogin(formData);
         setErrors(validationErrors);
 
-        if (Object.keys(validationErrors).length === 0) {
-            setUserName(formData.firstName);
-            setIsLogin(true);
-            setIsRegisterOpen(false);
-            setErrors({});
+        if(Object.keys(validationErrors).length === 0){
+            try{
+                const response = await fetch('http://localhost:5000/api/login' , {
+                    method:'POST',
+                    headers:{
+                        'Content-Type' : 'application/json'
+                    },
+                    body: JSON.stringify({
+                        email: formData.userEmail,
+                        password : formData.userPassword
+                    })
+                });
+
+                const data = await response.json();
+
+                if(data.success){
+                    console.log("Successful login!");
+                    setUserName(data.user.name);
+                    setHaveAccount(true);
+                    setIsLogin(true);
+                    setIsRegisterOpen(false);
+                    setErrors({});
+
+                    setFormData({
+                        ...formData,
+                        userEmail: '',
+                        userPassword: ''
+                    });
+                }
+                
+                alert(data.message);
+
+            }catch(e){
+                console.log(e.message);
+                alert("Server Error, Please try again later!");
+            }
         }
     };
 
@@ -225,18 +257,18 @@ function Navbar() {
                                         value={formData.userEmail}
                                         onChange={handleChange} 
                                     /><br />
-                                    <small>{errors.email}</small>
+                                    <small>{errors.userEmail}</small>
                                 </div>
                                 <div className="form-group">
                                     <input 
-                                        name="password"
+                                        name="userPassword"
                                         id="userPass" 
                                         type="password" 
                                         placeholder="Password"
                                         onChange={handleChange} 
-                                        value={formData.password}
+                                        value={formData.userPassword}
                                     /><br />
-                                    <small>{errors.password}</small>
+                                    <small>{errors.userPassword}</small>
                                 </div>
                                 <div className="formSubBtn">
                                     <button type="submit" className="submit-btn">Log In</button>
