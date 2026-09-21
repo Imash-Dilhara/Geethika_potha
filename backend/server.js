@@ -104,9 +104,6 @@ app.post('/api/login' , (req,res) => {
 
         const user = result[0];
 
-        //Remove after the test
-        console.log("User : " , user);
-
         const isPasswordMatch = (password === user.password);
 
         if(!isPasswordMatch){

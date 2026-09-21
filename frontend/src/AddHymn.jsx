@@ -4,7 +4,6 @@ import { validationAddHymn } from './utils/creat-account-validation';
 import './css/addHymn.css';
 
 function AddHymn() { 
-
     const [file, setFile] = useState(null);
 
     const [formData , setFormData] = useState({
@@ -33,9 +32,6 @@ function AddHymn() {
         const token = localStorage.getItem('token');
         const userId = localStorage.getItem('userId');
 
-        console.log("Token : " , token);
-        console.log("userId : " , userId);
-
         if(!token || !userId){
             alert("Please, First register!");
             return;
@@ -63,11 +59,9 @@ function AddHymn() {
 
                 const result = await response.json();
 
-                console.log("Add hymn result : " , result);
-
                 if(response.ok){
                     alert("Hymn added successfully!");
-                    console.log("Form submitted successfully!", result);
+                    console.log("Form submitted successfully!", result,message);
                     setErrors({});
                     setFormData({
                         title: '',
