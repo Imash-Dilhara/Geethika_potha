@@ -25,20 +25,63 @@ function AddHymn() {
         setFormData({...formData , [e.target.name]:e.target.value});
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async(e) => {
         e.preventDefault();
         const validationError = validationAddHymn(formData , file);
         setErrors(validationError);
 
+        const token = localStorage.getItem('token');
+        const userId = localStorage.getItem('userId');
+
+        console.log("Token : " , token);
+        console.log("userId : " , userId);
+
+        if(!token || !userId){
+            alert("Please, First register!");
+            return;
+        }
+
         if(Object.keys(validationError).length === 0){
-            console.log("Form submitted successfully!", { formData, file });
-            setErrors({});
-            setFormData({
-                title:'',
-                firstName:'',
-                lastName:''
-            });
-            setFile(null);
+            const dataToSend = new FormData();
+            dataToSend.append('title' , formData.title);
+            dataToSend.append('firstName' , formData.firstName);
+            dataToSend.append('lastName' , formData.lastName);
+            dataToSend.append('userId' , userId);
+
+            if(file){
+                dataToSend.append('pdf' , file);
+            }
+
+            try{
+                const response = await fetch('http://localhost:5000/api/addhymn' , {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: dataToSend
+                });
+
+                const result = await response.json();
+
+                console.log("Add hymn result : " , result);
+
+                if(response.ok){
+                    alert("Hymn added successfully!");
+                    console.log("Form submitted successfully!", result);
+                    setErrors({});
+                    setFormData({
+                        title: '',
+                        firstName: '',
+                        lastName: ''
+                    });
+                    setFile(null);
+                }else{
+                    alert(`Error: ${result.message || 'Something went wrong'}`);
+                }
+            }catch(e){
+                console.error("Error submitting hymn:", e);
+                alert("Server error. Please check your backend connection.");
+            }
         }
     };
 
@@ -72,8 +115,8 @@ function AddHymn() {
 
                         <label htmlFor="singerFname">Singer : </label>
                         <div className='singerNameBox'>
-                            <input name='firstName' id='singerFname' type="text" onChange={handleChange} placeholder='First name type here'/>
-                            <input name='lastName' id='singerLname' type="text" onChange={handleChange} placeholder='Last name type here'/>
+                            <input name='firstName' id='singerFname' type="text" value={formData.firstName} onChange={handleChange} placeholder='First name type here'/>
+                            <input name='lastName' id='singerLname' type="text" value={formData.lastName} onChange={handleChange} placeholder='Last name type here'/>
                         </div>
                         <div className="addButton">
                             <button type="submit">

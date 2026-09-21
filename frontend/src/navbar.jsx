@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState , useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { validateRegister, validateLogin } from "./utils/creat-account-validation";
 import './css/navbar.css';
@@ -13,7 +13,7 @@ function Navbar() {
     const [userName, setUserName] = useState("");
 
     const [formData, setFormData] = useState({
-        firstName: "",
+        firstName: "", 
         lastName: "",
         email: "",
         password: "",
@@ -23,6 +23,16 @@ function Navbar() {
     });
 
     const [errors, setErrors] = useState({});
+
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        const name = localStorage.getItem('userName');
+
+        if(token && name){
+            setIsLogin(true);
+            setUserName(name);
+        }
+    } , []);
 
     let registrationTitle = haveAccount ? "Sign In" : "Create an Account";
 
@@ -37,7 +47,7 @@ function Navbar() {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    //Submit
+    //Register
     const handleRegisterSubmit = async(e) => {
         e.preventDefault();
         const validationErrors = validateRegister(formData);
@@ -62,15 +72,21 @@ function Navbar() {
 
                 if(response.ok){
                     alert(data.message);
+
+                    localStorage.setItem('token' , data.token);
+                    localStorage.setItem('userId' , data.user.id);
+                    localStorage.setItem('userName' , data.user.name);
+
                     setUserName(formData.firstName);
                     setIsLogin(true);
                     setIsRegisterOpen(false);
                     setHaveAccount(true);
                     setErrors({});
-
                     setFormData({
                         password: "",
-                        confirmPassword: ""
+                        confirmPassword: "",
+                        userEmail:"",
+                        userPassword: ""
                     });
                 }else{
                     alert(data.error || "Registration failed!");
@@ -105,6 +121,14 @@ function Navbar() {
 
                 if(data.success){
                     console.log("Successful login!");
+
+                    localStorage.setItem('token' , data.token);
+                    localStorage.setItem('userId' , data.user.id);
+                    localStorage.setItem('userName' , data.user.name);
+
+                    console.log("User ID : " , data.user.id);
+                    console.log("User name : " , data.user.name);
+
                     setUserName(data.user.name);
                     setHaveAccount(true);
                     setIsLogin(true);
@@ -298,6 +322,9 @@ function Navbar() {
                         <div 
                             className="avatar-content-box"
                             onClick={() => {
+                                localStorage.removeItem('token');
+                                localStorage.removeItem('userId');
+                                localStorage.removeItem('userName');
                                 setIsRegisterOpen(false);
                                 setIsLogin(false);
                                 setIsClickAvatar(false);
