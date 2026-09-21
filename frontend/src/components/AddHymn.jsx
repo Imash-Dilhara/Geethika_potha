@@ -40,8 +40,8 @@ function AddHymn() {
         if(Object.keys(validationError).length === 0){
             const dataToSend = new FormData();
             dataToSend.append('title' , formData.title);
-            dataToSend.append('firstName' , formData.firstName);
-            dataToSend.append('lastName' , formData.lastName);
+            dataToSend.append('firstName' , formData.firstName || 'Unknown');
+            dataToSend.append('lastName' , formData.lastName || 'Unknown');
             dataToSend.append('userId' , userId);
 
             if(file){
@@ -61,7 +61,7 @@ function AddHymn() {
 
                 if(response.ok){
                     alert("Hymn added successfully!");
-                    console.log("Form submitted successfully!", result,message);
+                    console.log("Form submitted successfully!", result.message);
                     setErrors({});
                     setFormData({
                         title: '',

@@ -21,11 +21,13 @@ function Home(){
                         </div></Link>
                     </div>
                     <div className="left">
+                        <Link to = "/viewallhymn">
                         <div>
                             <h1 className="boxName">View Hymns</h1>
                             <p>"Discover all available hymns in our database. Click here to browse through the entire collection, find your favorite worship songs, and view their full details."</p>
                             <h3>Click Here</h3>
                         </div>
+                        </Link>
                     </div>
                     <div className="right">
                         <div>

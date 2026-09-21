@@ -1,0 +1,58 @@
+.tableBox{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 50px 0;
+}
+
+table{
+    width: 90%;
+    border-collapse: collapse;
+    border-color:transparent;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.169);
+}
+
+th{
+    text-align: left;
+    letter-spacing: 0.2em;
+    font-family: monospace;
+    font-size: 22px;
+}
+
+td{
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    padding: 10px 0;
+}
+
+th:first-child,td:first-child{
+    padding: 0 20px;
+}
+
+tbody tr{
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+tbody tr:hover{
+    background-color: rgba(94, 94, 250, 0.432);
+}
+
+thead tr:first-child{
+    height: 50px;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.13);
+    background-color: rgba(1, 1, 80, 0.792);
+    color: white;
+}
+
+tr:nth-child(even){
+    background-color: rgba(136, 136, 247, 0.151);
+}
+
+.pdfLink a{
+    color: black;
+}
+
+.pdfLink a:hover{
+    color: rgb(51, 51, 237);
+}

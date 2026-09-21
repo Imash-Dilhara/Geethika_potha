@@ -40,6 +40,7 @@ function Navbar() {
     if (location.pathname === "/about") pageTitle = "About";
     else if (location.pathname === "/contact") pageTitle = "Contact";
     else if (location.pathname === "/addHymn") pageTitle = "Add Hymn";
+    else if (location.pathname === "/viewallhymn") pageTitle = "View All Hymn";
 
     const firstLetter = userName ? userName.charAt(0).toUpperCase() : "";
 

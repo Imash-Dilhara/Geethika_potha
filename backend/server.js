@@ -13,6 +13,8 @@ app.use(cors({
 
 app.use(express.json());
 
+app.use('/uploads' , express.static(path.join(__dirname , 'uploads')));
+
 //Multer strp for PDF file
 const storage = multer.diskStorage({
     destination: (req, file , cd) => {
@@ -161,6 +163,25 @@ app.post('/api/addhymn' ,veryfyToken,upload.single('pdf'),(req,res) => {
             message:'Hymn added successfully!',
             hymnId: result.insertId
         });
+    });
+});
+
+//Get Hymns
+app.get('/api/getallhymns' ,(req,res) => {
+    const query = "SELECT * FROM hymns";
+
+    db.query(query , (e,result) => {
+        if(e){
+            console.error("Error fetching hymns : ",e);
+            return res.status(500).json({error : "Database error!"});
+        }
+
+        const hymnWithPDFURL = result.map(hymn => ({
+            ...hymn,
+            pdfURL: hymn.pdf ? `http://localhost:5000/uploads/${hymn.pdf}` : null
+        }));
+
+        res.json(hymnWithPDFURL);
     });
 });
 

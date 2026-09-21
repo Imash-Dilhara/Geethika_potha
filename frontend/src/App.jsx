@@ -6,7 +6,8 @@ import Home from './Home.jsx';
 import About from './About.jsx';
 import Contact from './Contact.jsx';
 import AddHymn from "./components/AddHymn.jsx";
-import ScrollToTop from "./ScrollToTop.jsx";
+import ScrollToTop from "./components/ScrollToTop.jsx";
+import ViewAllHymn from "./components/ViewAllHymn.jsx";
 import './css/App.css';
 
 function App(){
@@ -20,6 +21,7 @@ function App(){
                 <Route path="/about" element={<About />} />
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/addHymn" element={<AddHymn />} />
+                <Route path="/viewallhymn" element={<ViewAllHymn />} />
             </Routes>
 
             <Footer />
