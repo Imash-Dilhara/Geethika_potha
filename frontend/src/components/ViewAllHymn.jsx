@@ -42,7 +42,7 @@ function ViewAllHymn() {
                     {hymns.map((hymn, index) => {                
                         return (
                             <tr key={hymn.id || index}>
-                                <td>{index + 1}</td>
+                                <td>{String(index + 1).padStart(3,"0")}</td>
                                 <td>{hymn.title}</td>
                                 <td>{hymn.singerFname}</td>
                                 <td className='pdfLink'>

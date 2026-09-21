@@ -51,8 +51,10 @@ function Navbar() {
     //Register
     const handleRegisterSubmit = async(e) => {
         e.preventDefault();
-        const validationErrors = validateRegister(formData);
+        const validationErrors = await validateRegister(formData);
         setErrors(validationErrors);
+
+
 
         if (Object.keys(validationErrors).length === 0) {
             try{

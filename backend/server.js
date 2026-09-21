@@ -168,7 +168,7 @@ app.post('/api/addhymn' ,veryfyToken,upload.single('pdf'),(req,res) => {
 
 //Get Hymns
 app.get('/api/getallhymns' ,(req,res) => {
-    const query = "SELECT * FROM hymns";
+    const query = "SELECT * FROM hymns ORDER BY title ASC";
 
     db.query(query , (e,result) => {
         if(e){
@@ -182,6 +182,29 @@ app.get('/api/getallhymns' ,(req,res) => {
         }));
 
         res.json(hymnWithPDFURL);
+    });
+});
+
+//Check email
+app.post('/api/allemail' , (req,res) => {
+
+    const { email } = req.body;
+
+    const query = "SELECT * FROM register WHERE email = ?";
+
+    db.query(query, [email] , (e,result) => {
+        if(e){
+            console.error("Error fetching hymns : ",e);
+            return res.status(500).json({error : "Database error!"});
+        }
+
+        //remove this
+        console.log("Check Email : " , result);
+
+        if(result.length === 0){
+            return res.status(200).json(false);
+        }
+        res.status(200).json(true);
     });
 });
 

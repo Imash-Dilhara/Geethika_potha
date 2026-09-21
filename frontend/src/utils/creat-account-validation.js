@@ -1,4 +1,4 @@
-export const validateRegister = (formData) => {
+export const validateRegister = async(formData) => {
     let errors = {};
 
     // First Name Validation
@@ -8,10 +8,37 @@ export const validateRegister = (formData) => {
 
     // Email Validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const checkEmail = async(e) => {
+        try{
+            const response = await fetch('http://localhost:5000/api/allemail' , {
+                method: 'POST',
+                headers:{
+                    'Content-type':'application/json'
+                },
+                body: JSON.stringify({
+                    email : formData.email
+                })
+            });
+
+            const data = await response.json();
+
+            return data;
+        }catch(e){
+            console.log("Error connecting to server(Check email validation part) : " , e);
+            alert("Server error. Please try again later.(Check email calidation part)");
+            return false;
+        }
+    };
+
     if (!formData.email.trim()) {
         errors.email = "Email is required.";
     } else if (!emailRegex.test(formData.email)) {
         errors.email = "Invalid email format.";
+    }else{
+        const isEmailExists = await checkEmail();
+        if(isEmailExists){
+            errors.email = "Email already registered. Please try another.";
+        }
     }
 
     // Password Validation

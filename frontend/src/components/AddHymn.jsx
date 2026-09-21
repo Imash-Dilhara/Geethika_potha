@@ -84,6 +84,7 @@ function AddHymn() {
             <div className="addHymnFormBox">
                 <div className='gradientBox'>
                     <h1>Create and Publish New Hymn</h1>
+                    <i className='constraints'>Please check if the hymn you are trying to add already exists before adding it.</i>
                     <form className='addHymnForm' onSubmit={handleSubmit} noValidate>
                         <label htmlFor="title">Hymn Title : </label>
                         <input name='title' id='hymnTitle' type="text" value={formData.title} onChange={handleChange} placeholder='Hymn name type here'/>
