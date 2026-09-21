@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { validationAddHymn } from './utils/creat-account-validation';
-import './css/addHymn.css';
+import { validationAddHymn } from '../utils/creat-account-validation';
+import '../css/addHymn.css';
 
 function AddHymn() { 
     const [file, setFile] = useState(null);

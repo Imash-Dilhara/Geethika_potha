@@ -5,7 +5,7 @@ import Footer from './footer.jsx';
 import Home from './Home.jsx';
 import About from './About.jsx';
 import Contact from './Contact.jsx';
-import AddHymn from "./AddHymn.jsx";
+import AddHymn from "./components/AddHymn.jsx";
 import ScrollToTop from "./ScrollToTop.jsx";
 import './css/App.css';
 
