@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import '../css/viewAllHymn.css';
 
 function ViewAllHymn() {
@@ -29,6 +30,15 @@ function ViewAllHymn() {
 
     return (
         <div className="tableBox">
+            <div className='searchHymnBox'>
+                <h1 className='title'>Search Hymn</h1>
+                <div className="searchBox">
+                    <input type="text" className="searchBar" placeholder="Search for a hymn..."/>
+                    <img src="assets/search-icon.png" className="searchIcon" alt="Search Icon"/>
+                </div>
+                <h1 className='title allHymnTitle'>All Hymn</h1>
+            </div>
+
             <table border={1}>
                 <thead>
                     <tr>
@@ -57,6 +67,9 @@ function ViewAllHymn() {
                     })}
                 </tbody>
             </table>
+            <div className='back-to-home-box'>
+                <Link to='/'><button>Back to Home</button></Link>
+            </div>
         </div>
     );
 }

@@ -1,9 +1,25 @@
 .tableBox{
     width: 100%;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     padding: 50px 0;
+    gap: 50px;
+}
+
+.searchHymnBox{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+}
+
+.allHymnTitle{
+    margin-bottom: -30px;
+    font-size: 26px;
+    color: rgba(0, 0, 0, 0.447);
+    font-family: monospace;
 }
 
 table{

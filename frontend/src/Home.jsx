@@ -1,17 +1,58 @@
-import React from 'react';
+import React , { useEffect , useState } from 'react';
 import './css/home.css';
 import { Link } from 'react-router-dom';
 
 function Home(){
+
+    const [searchTerm  , setSearchTerm] = useState('');
+    const [hymns , setHymns] = useState([]);
+    const [filterHymn , setFilterHymn] = useState([]);
+
+    useEffect(() => {
+        fetch('/api/searchhymns')
+            .then(res => res.json())
+            .then(data => {
+                setHymns(data);
+                setFilterHymn(data);
+            }).catch(e => console.error(e));
+    } , []);
+
+    const handleChange = (e) => {
+        const value = e.target.value;
+        setSearchTerm(value);
+
+        const filtered = hymns.filter(hymn => 
+            hymn.title.toLowerCase().inculdes(value.toLowerCase())
+        );
+        setFilterHymn(filtered);
+    };
+
     return(
         <>
             <div className="contentBox">
                 <h1 className="title">Explore Worship Hymns</h1>
                 <p className="searchPara">Discover lyrics and curate songs for your upcoming worship session</p>
                 <div className="searchBox">
-                    <input type="text" className="searchBar" placeholder="Search for a hymn..."/>
+                    <input type="text" className="searchBar" value={searchTerm} onChange={handleChange} placeholder="Search for a hymn..."/>
                     <img src="assets/search-icon.png" className="searchIcon" alt="Search Icon"/>
                 </div>
+
+                {searchTerm && (
+                    <div className="searchResult">
+                        {filterHymn.length > 0 ? (
+                            filterHymn.map(hymn => (
+                                <div className="searchResultItem" key = {hymn.id}>
+                                    <Link to={`/hymn/${hymn.id}`}>
+                                        <h3>{hymn.title}</h3>
+                                    </Link>
+                                </div>
+                            ))
+                        ) : (
+                            <p>No Hymns found</p>
+                        )}
+                    </div>
+                )}
+
                 <div className="sideBox">
                     <div className = "add">
                         <Link to="/addHymn"><div>

@@ -184,7 +184,7 @@ function Navbar() {
                                             setIsRegisterOpen(true);
                                             setErrors({});
                                         }}>
-                                        Register
+                                        Sign In
                                     </button>
                                 )}
                             </li>
