@@ -208,6 +208,32 @@ app.post('/api/allemail' , (req,res) => {
     });
 });
 
+//Search Hymn
+app.get('/api/searchhymns' , (req,res) => {
+    const {search} = req.query;
+
+    if(!search){
+        return res.status(400).json({error : "Search term is reqiured!"});
+    }
+
+    const query = "SELECT * FROM hymns WHERE title LIKE ? ORDER BY  title ASC";
+    const searchTerm  = `%${search}%`;
+
+    db.query(query , [searchTerm] , (e,result) => {
+        if(e){
+            console.error("Error searching hymn : " , e);
+            return res.status(500).json({error: 'Database Error!'});
+        }
+
+        const hymnWithPDFURL = result.map(hymn => ({
+            ...hymn,
+            pdfURL: hymn.pdf ? `http://localhost:5000/uploads/${hymn.pdf}` : null
+        }));
+
+        res.json(hymnWithPDFURL);
+    });
+});
+
 app.listen(5000 , () => {
     console.log("Server is running");
 });

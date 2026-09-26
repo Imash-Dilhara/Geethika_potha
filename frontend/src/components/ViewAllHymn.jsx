@@ -3,19 +3,54 @@ import { Link } from 'react-router-dom';
 import '../css/viewAllHymn.css';
 
 function ViewAllHymn() {
-    const [hymns, setHymns] = useState([]);
+    const [allHymns, setAllHymns] = useState([]);
+    const [searchTerm  , setSearchTerm] = useState('');
+    const [hymns , setHymns] = useState([]);
+    const [filterHymn , setFilterHymn] = useState([]);
+
+    useEffect(() => {
+        fetch('http://localhost:5000/api/getallhymns')
+            .then(res => res.json())
+            .then(data => {
+                setHymns(data);
+                setFilterHymn(data);
+            }).catch(e => console.error(e));
+    } , []);
+
+    const handleChange = async(e) => {
+        const value = e.target.value;
+        setSearchTerm(value);
+
+        if(!value){
+            setFilterHymn(hymns);
+            return;
+        }
+        
+        try{
+            const res = await fetch(`http://localhost:5000/api/searchhymns?search=${value}`);
+            if(!res.ok){
+                throw new Error('Search Error!');
+            }
+            const data = await res.json();
+            setFilterHymn(data);
+        }catch(e){
+            console.error(e);
+        }
+    };
+
+    
 
     useEffect(() => {
         fetch('http://localhost:5000/api/getallhymns')
             .then(response => response.json())
-            .then(data => setHymns(data))
+            .then(data => setAllHymns(data))
             .catch(error => console.error("Error fetching data : ", error));
     }, []);
 
     useEffect(() => {
         const urls = {};
 
-        hymns.forEach((hymn, index) => {
+        allHymns.forEach((hymn, index) => {
             if (hymn.pdf && hymn.pdf.data) {
                 const uint8Array = new Uint8Array(hymn.pdf.data);
                 const blob = new Blob([uint8Array], { type: 'application/pdf' });
@@ -26,15 +61,33 @@ function ViewAllHymn() {
         return () => {
             Object.values(urls).forEach(url => URL.revokeObjectURL(url));
         };
-    }, [hymns]);
+    }, [allHymns]);
 
     return (
         <div className="tableBox">
             <div className='searchHymnBox'>
                 <h1 className='title'>Search Hymn</h1>
-                <div className="searchBox">
-                    <input type="text" className="searchBar" placeholder="Search for a hymn..."/>
-                    <img src="assets/search-icon.png" className="searchIcon" alt="Search Icon"/>
+                <div className="searchContent">
+                    <div className="searchBox">
+                        <input type="text" className="searchBar" value={searchTerm} onChange={handleChange} placeholder="Search for a hymn..."/>
+                        <img src="assets/search-icon.png" className="searchIcon" alt="Search Icon"/>
+                    </div>
+        
+                    {searchTerm && (
+                        <div className="searchResult">
+                            {filterHymn.length > 0 ? (
+                                filterHymn.map(hymn => (
+                                    <div className="searchResultItem" key = {hymn.h_no}>
+                                        <Link to={`/hymn/${hymn.id}`}>
+                                            <h3>{hymn.title}</h3>
+                                        </Link>
+                                    </div>
+                                ))
+                            ) : (
+                                <p>No Hymns found</p>
+                            )}
+                        </div>
+                    )}
                 </div>
                 <h1 className='title allHymnTitle'>All Hymn</h1>
             </div>
@@ -49,7 +102,7 @@ function ViewAllHymn() {
                     </tr>
                 </thead>
                 <tbody>
-                    {hymns.map((hymn, index) => {                
+                    {allHymns.map((hymn, index) => {                
                         return (
                             <tr key={hymn.id || index}>
                                 <td>{String(index + 1).padStart(3,"0")}</td>

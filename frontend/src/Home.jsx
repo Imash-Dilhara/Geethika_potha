@@ -9,7 +9,7 @@ function Home(){
     const [filterHymn , setFilterHymn] = useState([]);
 
     useEffect(() => {
-        fetch('/api/searchhymns')
+        fetch('http://localhost:5000/api/getallhymns')
             .then(res => res.json())
             .then(data => {
                 setHymns(data);
@@ -17,14 +17,25 @@ function Home(){
             }).catch(e => console.error(e));
     } , []);
 
-    const handleChange = (e) => {
+    const handleChange = async(e) => {
         const value = e.target.value;
         setSearchTerm(value);
 
-        const filtered = hymns.filter(hymn => 
-            hymn.title.toLowerCase().inculdes(value.toLowerCase())
-        );
-        setFilterHymn(filtered);
+        if(!value){
+            setFilterHymn(hymns);
+            return;
+        }
+        
+        try{
+            const res = await fetch(`http://localhost:5000/api/searchhymns?search=${value}`);
+            if(!res.ok){
+                throw new Error('Search Error!');
+            }
+            const data = await res.json();
+            setFilterHymn(data);
+        }catch(e){
+            console.error(e);
+        }
     };
 
     return(
@@ -32,26 +43,28 @@ function Home(){
             <div className="contentBox">
                 <h1 className="title">Explore Worship Hymns</h1>
                 <p className="searchPara">Discover lyrics and curate songs for your upcoming worship session</p>
-                <div className="searchBox">
-                    <input type="text" className="searchBar" value={searchTerm} onChange={handleChange} placeholder="Search for a hymn..."/>
-                    <img src="assets/search-icon.png" className="searchIcon" alt="Search Icon"/>
-                </div>
-
-                {searchTerm && (
-                    <div className="searchResult">
-                        {filterHymn.length > 0 ? (
-                            filterHymn.map(hymn => (
-                                <div className="searchResultItem" key = {hymn.id}>
-                                    <Link to={`/hymn/${hymn.id}`}>
-                                        <h3>{hymn.title}</h3>
-                                    </Link>
-                                </div>
-                            ))
-                        ) : (
-                            <p>No Hymns found</p>
-                        )}
+                <div className="searchContent">
+                    <div className="searchBox">
+                        <input type="text" className="searchBar" value={searchTerm} onChange={handleChange} placeholder="Search for a hymn..."/>
+                        <img src="assets/search-icon.png" className="searchIcon" alt="Search Icon"/>
                     </div>
-                )}
+        
+                    {searchTerm && (
+                        <div className="searchResult">
+                            {filterHymn.length > 0 ? (
+                                filterHymn.map(hymn => (
+                                    <div className="searchResultItem" key = {hymn.h_no}>
+                                        <Link to={`/hymn/${hymn.id}`}>
+                                            <h3>{hymn.title}</h3>
+                                        </Link>
+                                    </div>
+                                ))
+                            ) : (
+                                <p>No Hymns found</p>
+                            )}
+                        </div>
+                    )}
+                </div>
 
                 <div className="sideBox">
                     <div className = "add">
