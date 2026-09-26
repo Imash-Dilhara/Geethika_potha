@@ -48,15 +48,15 @@ function Home(){
                         <input type="text" className="searchBar" value={searchTerm} onChange={handleChange} placeholder="Search for a hymn..."/>
                         <img src="assets/search-icon.png" className="searchIcon" alt="Search Icon"/>
                     </div>
-        
+
                     {searchTerm && (
                         <div className="searchResult">
                             {filterHymn.length > 0 ? (
                                 filterHymn.map(hymn => (
                                     <div className="searchResultItem" key = {hymn.h_no}>
-                                        <Link to={`/hymn/${hymn.id}`}>
+                                        <a href={hymn.pdfURL} target="_blank" rel="noopener noreferrer">
                                             <h3>{hymn.title}</h3>
-                                        </Link>
+                                        </a>
                                     </div>
                                 ))
                             ) : (

@@ -78,9 +78,9 @@ function ViewAllHymn() {
                             {filterHymn.length > 0 ? (
                                 filterHymn.map(hymn => (
                                     <div className="searchResultItem" key = {hymn.h_no}>
-                                        <Link to={`/hymn/${hymn.id}`}>
+                                        <a href={hymn.pdfURL} target="_blank" rel="noopener noreferrer">
                                             <h3>{hymn.title}</h3>
-                                        </Link>
+                                        </a>
                                     </div>
                                 ))
                             ) : (
