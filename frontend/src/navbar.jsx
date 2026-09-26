@@ -310,8 +310,7 @@ function Navbar() {
                                     </p>
                                     <p className="forgotPass" 
                                         onClick={() => { 
-                                            setHaveAccount(!haveAccount);
-                                            setErrors({}); 
+                                             
                                         }}
                                     >Forgot password
                                     </p>
