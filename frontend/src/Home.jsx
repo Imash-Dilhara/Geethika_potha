@@ -84,11 +84,13 @@ function Home(){
                         </Link>
                     </div>
                     <div className="right">
-                        <div>
-                            <h1 className="boxName">Create Hymn Slot</h1>
-                            <p>"Plan and organize your worship service with ease. Select up to 10 hymns from the library, customize their order, and launch them into a presentation-ready slot."</p>
-                            <h3>Click Here</h3>
-                        </div>
+                        <Link to ='/createHymnSlot'>
+                            <div>
+                                <h1 className="boxName">Create Hymn Slot</h1>
+                                <p>"Plan and organize your worship service with ease. Select up to 10 hymns from the library, customize their order, and launch them into a presentation-ready slot."</p>
+                                <h3>Click Here</h3>
+                            </div>
+                        </Link>
                     </div>
                 </div>
         

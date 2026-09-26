@@ -8,6 +8,7 @@ import Contact from './Contact.jsx';
 import AddHymn from "./components/AddHymn.jsx";
 import ScrollToTop from "./components/ScrollToTop.jsx";
 import ViewAllHymn from "./components/ViewAllHymn.jsx";
+import CreateHymnSolt from "./components/CreateSlot.jsx";
 import './css/App.css';
 
 function App(){
@@ -22,6 +23,7 @@ function App(){
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/addHymn" element={<AddHymn />} />
                 <Route path="/viewallhymn" element={<ViewAllHymn />} />
+                <Route path="/createHymnSlot" element={<CreateHymnSolt />} />
             </Routes>
 
             <Footer />

@@ -41,6 +41,7 @@ function Navbar() {
     else if (location.pathname === "/contact") pageTitle = "Contact";
     else if (location.pathname === "/addHymn") pageTitle = "Add Hymn";
     else if (location.pathname === "/viewallhymn") pageTitle = "View All Hymn";
+    else if (location.pathname === "/createHymnSlot") pageTitle = "Create Slot";
 
     const firstLetter = userName ? userName.charAt(0).toUpperCase() : "";
 
@@ -299,13 +300,22 @@ function Navbar() {
                                 </div>
                                 <div className="formSubBtn">
                                     <button type="submit" className="submit-btn">Log In</button>
-                                    <p 
+                                    <div className="clickOptionBox">
+                                        <p 
                                         className="accHave" 
                                         onClick={() => { 
                                             setHaveAccount(!haveAccount); 
                                             setErrors({}); 
                                         }}>Create an account?
                                     </p>
+                                    <p className="forgotPass" 
+                                        onClick={() => { 
+                                            setHaveAccount(!haveAccount);
+                                            setErrors({}); 
+                                        }}
+                                    >Forgot password
+                                    </p>
+                                    </div>
                                 </div>
                             </form>
                         )}

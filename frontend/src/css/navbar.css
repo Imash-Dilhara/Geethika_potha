@@ -142,17 +142,6 @@
     animation: slideDown 0.3s ease-in-out forwards;
 }
 
-@keyframes slideDown {
-    0% {
-        opacity: 0;
-        transform: translateY(-25px);
-    }
-    100% {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
 .modalContent{
     background-color: #ffffff;
     width: 90%;
@@ -237,12 +226,22 @@
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.475);
 }
 
-.accHave{
+.clickOptionBox{
+    display: flex;
+    gap: 15px;
+}
+
+.accHave , .forgotPass{
     color: rgb(77, 77, 190);
     font-family: monospace;
     cursor: pointer;
     font-size: 16px;
     transition: 0.3s;
+}
+
+.forgotPass:hover{
+    color: red;
+    text-decoration: underline;
 }
 
 .accHave:hover{
@@ -275,17 +274,6 @@ small{
     width: 20%;
     z-index: 500;
     animation: slideDown 0.5s ease-in-out forwards;
-}
-
-@keyframes slideDown {
-    0% {
-        opacity: 0;
-        transform: translateY(-25px);
-    }
-    100% {
-        opacity: 1;
-        transform: translateY(0);
-    }
 }
 
 .avatarHeader{
@@ -329,4 +317,26 @@ small{
 .avatar-content-box p{
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     transition:  0.5s;
+}
+
+@keyframes slideDown {
+    0% {
+        opacity: 0;
+        transform: translateY(-25px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideDown {
+    0% {
+        opacity: 0;
+        transform: translateY(-25px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
