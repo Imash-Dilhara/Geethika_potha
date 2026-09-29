@@ -1,6 +1,7 @@
 import React, { useState , useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { validateRegister, validateLogin } from "./utils/creat-account-validation";
+import axios from 'axios';
 import './css/navbar.css';
 
 function Navbar() {
@@ -12,6 +13,52 @@ function Navbar() {
     const [isLogin, setIsLogin] = useState(false);
     const [userName, setUserName] = useState("");
 
+    const [isOtpSend , setIsOtpSend] = useState(false);
+    const [isEmailVerified , setIsEmailVerified] = useState(false);
+    const [loading , setLoading] = useState(false);
+    const [message , setMessage] = useState('');
+
+    const isValidEmail = (email) => {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    };
+
+    const handleEmailBlur = async () => {
+        if(isValidEmail(formData.email) && !isOtpSend && !isEmailVerified){
+            setLoading(true);
+            setMessage('Sending OTP to your email...');
+            try{
+                const res = await axios.post('http://localhost:5000/api/send-otp' , {email: formData.email});
+                if(res.data.success){
+                    setIsOtpSend(true);
+                    setMessage('OTP sent to your email! Please check and enter the code.');
+                }
+            }catch(e){
+                setMessage('Failed to send OTP. Please try again.');
+            }
+        }
+    };
+
+    const handleOtpBlur = async () => {
+        if(formData.otp.length === 6 && isOtpSend && !isEmailVerified){
+            setLoading(true);
+            setMessage('Verifying your OTP, please wait...');
+            try{
+                const res = axios.post('http://localhost:5000/api/verify-otp' , {
+                    email: formData.email,
+                    otp: formData.otp
+                });
+                if(res.data.success){
+                    setIsEmailVerified(true);
+                    setMessage('Your email has been successfully verified!');
+                }
+            }catch(e){
+                setMessage(e.response?.data?.message || 'Incorrect OTP code. Please try again.');
+            }finally{
+                setLoading(false);
+            }
+        }
+    };
+
     const [formData, setFormData] = useState({
         firstName: "", 
         lastName: "",
@@ -19,7 +66,8 @@ function Navbar() {
         password: "",
         confirmPassword: "",
         userEmail: "",
-        userPassword: ""
+        userPassword: "",
+        otp: ""
     });
 
     const [errors, setErrors] = useState({});
@@ -55,7 +103,10 @@ function Navbar() {
         const validationErrors = await validateRegister(formData);
         setErrors(validationErrors);
 
-
+        if(!isEmailVerified){
+            setMessage('Please verify your email first!');
+            return;
+        }
 
         if (Object.keys(validationErrors).length === 0) {
             try{
@@ -100,6 +151,7 @@ function Navbar() {
                 alert("Server error. Please try again leter.");
             }
         }
+        console.log('Errors : ' , errors);
     };
 
     //Login
@@ -209,6 +261,7 @@ function Navbar() {
 
                         {!haveAccount ? (
                             <form id="register-user-form" onSubmit={handleRegisterSubmit} noValidate>
+                                {/* first name field */}
                                 <div className="form-group">
                                     <input 
                                         name="firstName"
@@ -220,6 +273,7 @@ function Navbar() {
                                     /><br />
                                     <small>{errors.firstName}</small>
                                 </div>
+                                {/* last name field */}
                                 <div className="form-group">
                                     <input 
                                         name="lastName"
@@ -230,6 +284,7 @@ function Navbar() {
                                         onChange={handleChange} 
                                     />
                                 </div>
+                                {/* email field */}
                                 <div className="form-group">
                                     <input 
                                         name="email"
@@ -238,9 +293,26 @@ function Navbar() {
                                         placeholder="Email"
                                         value={formData.email}
                                         onChange={handleChange}
+                                        onBlur={handleEmailBlur}
                                     /><br />
                                     <small>{errors.email}</small>
                                 </div>
+                                {/* otp field */}
+                                <div className="form-group">
+                                    <input 
+                                        type="text" 
+                                        name="otp" 
+                                        id="otp" 
+                                        maxLength="6"
+                                        value={formData.otp}
+                                        disabled={!isOtpSend || isEmailVerified}
+                                        onChange={handleChange}
+                                        onBlur={handleOtpBlur}
+                                        placeholder="OTP code"
+                                    /><br/>
+                                    <small>{errors.otp}</small>
+                                </div>
+                                {/* password field */}
                                 <div className="form-group">
                                     <input 
                                         name="password"
@@ -252,6 +324,7 @@ function Navbar() {
                                     /><br />
                                     <small>{errors.password}</small>
                                 </div>
+                                {/* confirm password field */}
                                 <div className="form-group">
                                     <input 
                                         name="confirmPassword"
@@ -263,6 +336,7 @@ function Navbar() {
                                     /><br />
                                     <small>{errors.confirmPassword}</small>
                                 </div>
+                                {/* submit button and already have account field */}
                                 <div className="formSubBtn">
                                     <button type="submit" className="submit-btn">Register</button>
                                     <p className="accHave" 

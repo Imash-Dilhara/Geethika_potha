@@ -41,6 +41,11 @@ export const validateRegister = async(formData) => {
         }
     }
 
+    //OTP validation
+    if(!formData.otp){
+        errors.otp = "OTP code required.";
+    }
+
     // Password Validation
     if (!formData.password) {
         errors.password = "Password is required.";
@@ -50,7 +55,7 @@ export const validateRegister = async(formData) => {
 
     // Confirm Password Validation
     if(!formData.confirmPassword.trim()){
-        errors.confirmPassword = "*Again enter password";
+        errors.confirmPassword = "Again enter password";
     }else if (formData.password !== formData.confirmPassword) {
         errors.confirmPassword = "Passwords do not match.";
     }

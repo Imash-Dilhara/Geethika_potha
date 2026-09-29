@@ -18,7 +18,7 @@ router.post('/send-otp' , async(req , res) => {
     }
 });
 
-router.post('verify-otp' , async (req , res) => {
+router.post('/verify-otp' , async (req , res) => {
     const { email , otp } = req.body;
 
     if(!email || !otp){
