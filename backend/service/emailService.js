@@ -35,7 +35,7 @@ const sendOTPEmail = async (userEmail) => {
             <div style="background-color: #1e1e1e; padding: 12px 24px; display: inline-block; letter-spacing: 6px; font-size: 24px; font-weight: bold; color: #FFD700; border-radius: 6px; margin: 15px 0;">
               ${otp}
             </div>
-            <p style="color: #888888; font-size: 13px;">This code is valid for 5 minutes only.</p>
+            <p style="color: #888888; font-size: 13px;">This code is valid for 2 minutes only.</p>
       </div>
     `
     }
