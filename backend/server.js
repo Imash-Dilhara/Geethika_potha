@@ -5,6 +5,7 @@ const multer = require('multer');
 const path = require('path');
 const app = express();
 const db = require('./db');
+const emailRoutes = require('./routes/emailRoutes');    
 
 app.use(cors({
     origin: 'http://localhost:5173',
@@ -233,6 +234,8 @@ app.get('/api/searchhymns' , (req,res) => {
         res.json(hymnWithPDFURL);
     });
 });
+
+app.use('/api' , emailRoutes);
 
 app.listen(5000 , () => {
     console.log("Server is running");
