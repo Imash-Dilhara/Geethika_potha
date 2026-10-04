@@ -305,6 +305,7 @@ small{
 
 .avatar-content-box:hover p{
     color: white;
+    letter-spacing: 0.1em;
     font-weight: bold;
 }
 
@@ -317,6 +318,12 @@ small{
 .avatar-content-box p{
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     transition:  0.5s;
+}
+
+.otpMessage{
+    color: rgba(0, 235, 0, 0.646);
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 12px;
 }
 
 @keyframes slideDown {

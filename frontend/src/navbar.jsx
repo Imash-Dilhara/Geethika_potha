@@ -43,7 +43,7 @@ function Navbar() {
             setLoading(true);
             setMessage('Verifying your OTP, please wait...');
             try{
-                const res = axios.post('http://localhost:5000/api/verify-otp' , {
+                const res = await axios.post('http://localhost:5000/api/verify-otp' , {
                     email: formData.email,
                     otp: formData.otp
                 });
@@ -53,8 +53,6 @@ function Navbar() {
                 }
             }catch(e){
                 setMessage(e.response?.data?.message || 'Incorrect OTP code. Please try again.');
-            }finally{
-                setLoading(false);
             }
         }
     };
@@ -95,6 +93,7 @@ function Navbar() {
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
+        setLoading(false);
     };
 
     //Register
@@ -137,6 +136,7 @@ function Navbar() {
                     setIsRegisterOpen(false);
                     setHaveAccount(true);
                     setErrors({});
+                    setMessage('');
                     setFormData({
                         password: "",
                         confirmPassword: "",
@@ -311,6 +311,7 @@ function Navbar() {
                                         placeholder="OTP code"
                                     /><br/>
                                     <small>{errors.otp}</small>
+                                    {loading && <p className="otpMessage">{message}</p>}
                                 </div>
                                 {/* password field */}
                                 <div className="form-group">

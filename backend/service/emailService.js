@@ -12,7 +12,7 @@ const transport = nodemailer.createTransport({
 });
 
 const generateOTP = () => {
-    return Math.floor(100000 + Math.random()*900000);
+    return String(Math.floor(100000 + Math.random()*900000));
 };
 
 const sendOTPEmail = async (userEmail) => {
@@ -25,7 +25,7 @@ const sendOTPEmail = async (userEmail) => {
     } , 2*60*1000);
 
     const mailOption = {
-        from: '"HymnFlow" , <${process.env.EMAIL_USER}>',
+        from: `"HymnFlow" , <${process.env.EMAIL_USER}>`,
         to: userEmail,
         subject: 'HymnFlow - Email Verification Code',
         html: `
