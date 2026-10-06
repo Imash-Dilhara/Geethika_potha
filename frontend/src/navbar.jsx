@@ -1,6 +1,7 @@
 import React, { useState , useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { validateRegister, validateLogin } from "./utils/creat-account-validation";
+import ForgotPassword from "./components/ForgotPassword";
 import axios from 'axios';
 import './css/navbar.css';
 
@@ -12,11 +13,50 @@ function Navbar() {
     const [isClickAvatar, setIsClickAvatar] = useState(false);
     const [isLogin, setIsLogin] = useState(false);
     const [userName, setUserName] = useState("");
+    const [isForgotPassword , setIsForgotPassword] = useState(false);
+    const [ registrationTitle , setRegistrationTitle] = useState('Log In');
+    const [errors, setErrors] = useState({});
 
     const [isOtpSend , setIsOtpSend] = useState(false);
     const [isEmailVerified , setIsEmailVerified] = useState(false);
     const [loading , setLoading] = useState(false);
     const [message , setMessage] = useState('');
+    const [timer , setTimer] = useState(120);
+    const [isResendOtp , setIsResendOtp] = useState(false);
+
+    useEffect(() => {
+        let interval = null;
+        if(isOtpSend && timer > 0){
+            interval = setInterval(() => {
+                setTimer((prev) => prev - 1)
+            } , 1000);
+        }else if(timer === 0){
+            setIsResendOtp(true);
+            clearInterval(interval);
+        }
+
+        return () => clearInterval(interval);
+    }, [isOtpSend , timer]);
+
+    const handleResendOtp = async() => {
+        setIsResendOtp(false);
+        setTimer(120);
+        setMessage('Resending OTP to your email...');
+
+         try {
+            const res = await axios.post('http://localhost:5000/api/send-otp', {
+                email: formData.email
+            });
+            if (res.data.success) {
+                setMessage('A new OTP has been sent to your email!');
+                setFormData((prev) => ({ ...prev, otp: '' }));
+            }
+        } catch (e) {
+            setMessage('Failed to resend OTP. Please try again.');
+            setIsResendOtp(true);
+            setTimer(0);
+        }
+    };
 
     const isValidEmail = (email) => {
         return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -68,8 +108,6 @@ function Navbar() {
         otp: ""
     });
 
-    const [errors, setErrors] = useState({});
-
     useEffect(() => {
         const token = localStorage.getItem('token');
         const name = localStorage.getItem('userName');
@@ -79,8 +117,6 @@ function Navbar() {
             setUserName(name);
         }
     } , []);
-
-    let registrationTitle = haveAccount ? "Sign In" : "Create an Account";
 
     let pageTitle = "Home";
     if (location.pathname === "/about") pageTitle = "About";
@@ -247,13 +283,19 @@ function Navbar() {
             </div>
 
             {isRegisterOpen && (
-                <div className="modalBox" onClick={() => setIsRegisterOpen(false)}>
+                <div className="modalBox" onClick={() => {
+                    setIsRegisterOpen(false);
+                    setIsForgotPassword(false);
+                }}>
                     <div className="modalContent" onClick={(e) => e.stopPropagation()}>
                         <div className="modalHeader">
                             <h2>{registrationTitle}</h2>
                             <button 
                                 className="closeBtn" 
-                                onClick={() => setIsRegisterOpen(false)}
+                                onClick={() => {
+                                    setIsRegisterOpen(false);
+                                    setIsForgotPassword(false);
+                                }}
                             >
                                 ✕
                             </button>
@@ -311,7 +353,23 @@ function Navbar() {
                                         placeholder="OTP code"
                                     /><br/>
                                     <small>{errors.otp}</small>
-                                    {loading && <p className="otpMessage">{message}</p>}
+                                    <div className="otpBox">
+                                        {loading && <p className="otpMessage">{message}</p>}
+                                    {isOtpSend && (
+                                        <>
+                                            {timer > 0 ? (
+                                                <p className="resendOtpPara">Resend OTP : {Math.floor(timer/60)} : {timer%60 < 10 ? `0${timer%60}` : timer%60}</p>
+                                            ):(
+                                                <button 
+                                                    type="button"
+                                                    onClick={handleResendOtp}
+                                                    display={!isResendOtp}>
+                                                    Resend OTP
+                                                </button>
+                                            )}
+                                        </>
+                                    )}
+                                    </div>
                                 </div>
                                 {/* password field */}
                                 <div className="form-group">
@@ -343,13 +401,14 @@ function Navbar() {
                                     <p className="accHave" 
                                         onClick={() => { 
                                             setHaveAccount(!haveAccount);
-                                            setErrors({}); 
+                                            setErrors({});
+                                            setRegistrationTitle('Log In'); 
                                         }}
                                     >Already have an account?
                                     </p>
                                 </div>
                             </form>
-                        ) : (
+                        ) : ( !isForgotPassword ? (
                             <form onSubmit={handleLoginSubmit} noValidate>
                                 <div className="form-group">
                                     <input 
@@ -380,18 +439,25 @@ function Navbar() {
                                         className="accHave" 
                                         onClick={() => { 
                                             setHaveAccount(!haveAccount); 
-                                            setErrors({}); 
+                                            setErrors({});
+                                            setRegistrationTitle('Sign Up');
                                         }}>Create an account?
                                     </p>
                                     <p className="forgotPass" 
                                         onClick={() => { 
-                                             
+                                            setIsForgotPassword(true);
+                                            setRegistrationTitle('Forgot Password');
                                         }}
-                                    >Forgot password
+                                    >
+                                        Forgot password
                                     </p>
                                     </div>
                                 </div>
-                            </form>
+                            </form>): (
+                                <ForgotPassword
+                                    setIsForgotPassword={setIsForgotPassword}
+                                />
+                            )
                         )}
                     </div>
                 </div>

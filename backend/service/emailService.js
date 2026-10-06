@@ -60,4 +60,6 @@ const verifyOTP = (userEmail , inputOTP) => {
     return {success : false , message : 'Incorrect OTP. Please enter the correct code.'};
 };
 
+const sendRestPasswordLink = (userEmail) => {};
+
 module.exports = {sendOTPEmail , verifyOTP}

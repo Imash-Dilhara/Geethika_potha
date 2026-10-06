@@ -65,14 +65,9 @@ export const validateRegister = async(formData) => {
 
 export const validateLogin = (formData) => {
     let errors = {};
-
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!formData.userEmail.trim()) {
-        errors.userEmail = "Email is required.";
-    }else if(!emailRegex.test(formData.userEmail)){
-        errors.userEmail = "Invalid email.";
-    }
     
+    errors = validateEmail(formData.userEmail);
+
     if (!formData.userPassword.trim()) {
         errors.userPassword = "Password is required.";
     }else if(formData.userPassword.length < 8){
@@ -91,6 +86,19 @@ export const validationAddHymn = (formData , file) => {
 
     if(!file){
         errors.pdf = "Please upload a PDF hymn file";
+    }
+
+    return errors;
+};
+
+export const validateEmail = (email) => {
+    let errors = {};
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email.trim()) {
+        errors.userEmail = "Email is required.";
+    }else if(!emailRegex.test(email)){
+        errors.userEmail = "Invalid email.";
     }
 
     return errors;

@@ -249,6 +249,10 @@
     text-decoration: underline;
 }
 
+.accHave:hover , .forgotPass:hover{
+    letter-spacing: 1px;
+}
+
 small{
     color: red;
     font-family: monospace;
@@ -321,9 +325,41 @@ small{
 }
 
 .otpMessage{
-    color: rgba(0, 235, 0, 0.646);
+    color: rgba(1, 1, 107, 0.655);
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-size: 12px;
+}
+
+.otpBox{
+    width: 100%;
+    display: flex;
+    gap: 30px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.otpBox button{
+    width: 30%;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 0;
+    cursor: pointer;
+    color: rgba(0, 0, 91, 0.863);
+    background-color: rgba(65, 65, 65, 0.192);
+    transition: 0.5s;
+}
+
+.otpBox button:hover{
+    background-color: rgba(0, 0, 91, 0.863);
+    color: white;
+    box-shadow: 0 0 8px rgba(0, 0, 91, 0.863);
+    letter-spacing: 1px;
+}
+
+.resendOtpPara{
+    color: rgba(10, 10, 10, 0.411);
+    font-family: monospace;
+    width: 40%;
 }
 
 @keyframes slideDown {
