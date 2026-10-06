@@ -234,21 +234,6 @@ app.get('/api/searchhymns' , (req,res) => {
 
 app.use('/api' , emailRoutes);
 
-//Change User Password
-app.use('/api/change-password' , (req,res) => {
-    const { id , new_password } = req.body;
-
-    const query = "UPDATE register SET password = ? WHERE r_no = ?";
-
-    db.query(query , [new_password , id] , (e,result) => {
-        if(e){
-            console.error("Error updating password : " , e);
-            return res.status(500).json({message: "Updating error!" , success:false});
-        }
-        res.status(200).json({message: "Password updated successfully!" , success:true});
-    })
-});
-
 app.listen(5000 , () => {
     console.log("Server is running");
 });

@@ -9,9 +9,18 @@ import AddHymn from "./components/AddHymn.jsx";
 import ScrollToTop from "./components/ScrollToTop.jsx";
 import ViewAllHymn from "./components/ViewAllHymn.jsx";
 import CreateHymnSolt from "./components/CreateSlot.jsx";
+import ChangePassword from "./components/ChnagePassword.jsx";
 import './css/App.css';
 
 function App(){
+
+    const param = new URLSearchParams(window.location.search);
+    const resetToken = param.get('token');
+
+    if(window.location.pathname === '/reset-password' && resetToken){
+        return <ChangePassword token={resetToken}/>
+    }
+
     return(
         <BrowserRouter>
             <Navbar />

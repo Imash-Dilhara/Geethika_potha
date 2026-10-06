@@ -60,6 +60,19 @@ const verifyOTP = (userEmail , inputOTP) => {
     return {success : false , message : 'Incorrect OTP. Please enter the correct code.'};
 };
 
-const sendRestPasswordLink = (userEmail) => {};
+const sendRestPasswordLink = async (userEmail, resetLink) => {
+    const mailOption = {
+        from: `"HymnFlow" <${process.env.EMAIL_USER}>`,
+        to: userEmail,
+        subject: "Reset your HymnFlow password",
+        html: `
+            <h2>Reset your password</h2>
+            <p>Click the button below to set a new password. This link expires in 30 minutes.</p>
+            <p><a href="${resetLink}" style="background:#4b4bbd;color:#fff;padding:10px 20px;border-radius:20px;text-decoration:none;">Reset Password</a></p>
+            <p>If you didn't request this, you can ignore this email.</p>`
+    };
 
-module.exports = {sendOTPEmail , verifyOTP}
+    await transport.sendMail(mailOption);
+};
+
+module.exports = {sendOTPEmail , verifyOTP , sendRestPasswordLink};
