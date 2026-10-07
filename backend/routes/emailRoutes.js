@@ -48,7 +48,7 @@ router.post('/forgot-password', (req, res) => {
         return res.status(400).json({ success: false, message: 'Email is required.' });
     }
 
-    const query = "SELECT r_no, password FROM register WHERE email = ?";
+    const query = "SELECT r_no, password , fname FROM register WHERE email = ?";
 
     db.query(query, [email], async (err, result) => {
         if (err) {
@@ -66,7 +66,11 @@ router.post('/forgot-password', (req, res) => {
         const user = result[0];
 
         const token = jwt.sign(
-            { id: user.r_no },
+            { 
+                id: user.r_no ,
+                email: email , 
+                name: user.fname 
+            },
             process.env.RESET_SECRET + user.password,
             { expiresIn: '30m' }
         );
@@ -90,7 +94,6 @@ router.post('/reset-password', (req, res) => {
         return res.status(400).json({ success: false, message: 'Token and new password are required.' });
     }
 
-    // Verify karanna kalin user wa hoyaganna token eke id eka kiyawanawa
     const decoded = jwt.decode(token);
     if (!decoded || !decoded.id) {
         return res.status(400).json({ success: false, message: 'Invalid reset link.' });
@@ -109,7 +112,6 @@ router.post('/reset-password', (req, res) => {
         const user = result[0];
 
         try {
-            // Signature eka, expiry eka, password wenas wela naththa kiyala okkoma check wenawa
             jwt.verify(token, process.env.RESET_SECRET + user.password);
         } catch (e) {
             return res.status(400).json({

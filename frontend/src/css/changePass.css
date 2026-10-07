@@ -1,0 +1,115 @@
+.changePass-content-box{
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(to bottom, rgba(43, 43, 215, 0.895) 5%, rgb(0, 0, 40) 100%);
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+}
+
+.welcomeMsg{
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 48px;
+    letter-spacing: 2px;
+    color: #f8f7f7af;
+    transition: 0.3s;
+}
+
+.welcomeMsg:hover{
+    color: #fff;
+    letter-spacing: 3px;
+}
+
+.change-pass-form-box{
+    background: rgba(255, 255, 255, 0.292);
+    width: 40%;
+    padding: 30px 50px;
+    border-radius: 10px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.196);
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    gap: 20px;
+}
+
+.changePassFormName{
+    color: #fff;
+    font-size: 24px;
+    margin-bottom: 20px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    letter-spacing: 2px;
+    transition: 0.5s;
+}
+
+.change-pass-form-box:hover .changePassFormName{
+    letter-spacing: 3px;
+}
+
+.change-pass-form-box form{
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.change-pass-form-field{
+    width: 100%;
+}
+
+.change-pass-form-field input{
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.187);
+    background: transparent;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.change-pass-form-field input:hover{
+    border-color: rgba(255, 255, 255, 0.454);
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.194);
+}
+
+.change-pass-form-field input::placeholder{
+    color: rgba(255, 255, 255, 0.45);
+}
+
+.change-pass-form-field input:focus{
+    outline: none;
+    border: 1px solid rgb(45, 45, 244);
+    background: rgba(104, 104, 253, 0.276);
+    color: #fff;
+    box-shadow: 0 0 10px rgba(45, 45, 244, 0.5);
+}
+
+.change-pass-form-field button{
+    width: 40%;
+    padding: 10px;
+    margin: 10px 0 ;
+    border-radius: 5px;
+    border: none;
+    background: rgb(243, 243, 243);
+    color: rgb(3, 3, 120);
+    font-size: 20px;
+    font-weight: bold;
+    font-family: monospace;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.change-pass-form-field button:hover{
+    background: rgb(3, 3, 120);
+    color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.349);
+    letter-spacing: 2px;
+}
+
+.welcomeMsg , .change-pass-form-box h1{
+    cursor: default;
+}

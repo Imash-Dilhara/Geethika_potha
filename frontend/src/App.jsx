@@ -10,7 +10,6 @@ import ScrollToTop from "./components/ScrollToTop.jsx";
 import ViewAllHymn from "./components/ViewAllHymn.jsx";
 import CreateHymnSolt from "./components/CreateSlot.jsx";
 import ChangePassword from "./components/ChnagePassword.jsx";
-import './css/App.css';
 
 function App(){
 
@@ -18,11 +17,15 @@ function App(){
     const resetToken = param.get('token');
 
     if(window.location.pathname === '/reset-password' && resetToken){
-        return <ChangePassword token={resetToken}/>
+        return (
+            <Routes>
+                <Route path="/reset-password" element={<ChangePassword/>}/>
+            </Routes>
+        );
     }
 
     return(
-        <BrowserRouter>
+        <>
             <Navbar />
             <ScrollToTop />
 
@@ -36,7 +39,7 @@ function App(){
             </Routes>
 
             <Footer />
-        </BrowserRouter>
+        </>
     );
 }
 
