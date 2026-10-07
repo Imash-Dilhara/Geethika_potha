@@ -218,9 +218,6 @@ function Navbar() {
                     localStorage.setItem('userId' , data.user.id);
                     localStorage.setItem('userName' , data.user.name);
 
-                    console.log("User ID : " , data.user.id);
-                    console.log("User name : " , data.user.name);
-
                     setUserName(data.user.name);
                     setHaveAccount(true);
                     setIsLogin(true);
