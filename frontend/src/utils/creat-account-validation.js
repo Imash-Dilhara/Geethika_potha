@@ -103,3 +103,21 @@ export const validateEmail = (email) => {
 
     return errors;
 };
+
+export const changePassword = (changeData) => {
+    let error = {};
+
+    if (!changeData.newPassword) {
+        error.password = "Password is required.";
+    } else if (changeData.newPassword.length < 8) {
+        error.password = "Password must be at least 6 characters.";
+    }
+    // Confirm Password Validation
+    if(!changeData.newConfirmPassword.trim()){
+        error.confirmPassword = "Again enter password";
+    }else if (changeData.newPassword !== changeData.newConfirmPassword) {
+        error.confirmPassword = "Passwords do not match.";
+    }
+
+    return error;
+};

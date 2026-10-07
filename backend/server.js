@@ -234,6 +234,33 @@ app.get('/api/searchhymns' , (req,res) => {
 
 app.use('/api' , emailRoutes);
 
+//Change password
+app.post('/api/change-password' , (req,res) => {
+    const { id , newPassword } = req.body;
+
+    if(!id || !newPassword){
+        return res.status(400).json({success: false , message:"Canot found user or password required."});
+    }
+
+    try{
+        const query = 'UPDATE register SET password = ? WHERE r_no = ?';
+        db.query(query , [newPassword , id] , (err , result) => {
+            if(err){
+                console.error("Can't change password : ", err);
+                return res.status(500).json({success: false , message: "Can't change the password, Database error!"});
+            }
+
+            if(result.length === 0){
+                return res.status(404).json({success:false , message:"User not found! Try again."});
+            }
+
+            return res.status(200).json({success: true , message: "Password change successfully!"});
+        });
+    }catch(e){
+        return res.status(500).json({success:false , message: "Password change database error!"});
+    }
+});
+
 app.listen(5000 , () => {
     console.log("Server is running");
 });
