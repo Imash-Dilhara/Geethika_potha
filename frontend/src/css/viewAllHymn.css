@@ -1,3 +1,7 @@
+*, *::before, *::after{
+    box-sizing: border-box;
+}
+
 .tableBox{
     width: 100%;
     display: flex;
@@ -6,6 +10,7 @@
     justify-content: center;
     padding: 50px 0;
     gap: 50px;
+    overflow-x: hidden;
 }
 
 .searchHymnBox{
@@ -13,6 +18,7 @@
     flex-direction: column;
     width: 100%;
     align-items: center;
+    padding: 0 12px;
 }
 
 .allHymnTitle{
@@ -20,6 +26,7 @@
     font-size: 26px;
     color: rgba(0, 0, 0, 0.447);
     font-family: monospace;
+    text-align: center;
 }
 
 table{
@@ -39,6 +46,7 @@ th{
 td{
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     padding: 10px 0;
+    word-break: break-word;
 }
 
 th:first-child,td:first-child{
@@ -78,4 +86,107 @@ td:last-child , td:first-child{
     color: red;
     font-weight: bold;
     letter-spacing: 0.1em;
+}
+
+/* ---------- Laptop ---------- */
+@media (max-width: 1100px) {
+    .searchBox{
+        padding: 0 20px;
+    }
+
+    table{
+        width: 94%;
+    }
+
+    .title{
+        margin-bottom: 20px;
+    }
+
+    th{
+        font-size: 19px;
+        letter-spacing: 0.12em;
+    }
+
+    td:last-child , td:first-child{
+        width: 140px;
+    }
+}
+
+/* ---------- Tablet ---------- */
+@media (max-width: 800px) {
+    .tableBox{
+        padding: 30px 0;
+        gap: 35px;
+    }
+
+    .allHymnTitle{
+        font-size: 22px;
+        margin-top: 15px;
+    }
+
+    table{
+        width: 96%;
+        margin-top: 10px;
+    }
+
+    th{
+        font-size: 16px;
+        letter-spacing: 0.06em;
+    }
+
+    td{
+        font-size: 14px;
+    }
+
+    th:first-child,td:first-child{
+        padding: 0 12px;
+    }
+
+    td:last-child , td:first-child{
+        width: 90px;
+    }
+}
+
+/* ---------- Mobile ---------- */
+@media (max-width: 500px) {
+    .tableBox{
+        padding: 20px 0;
+        gap: 25px;
+    }
+
+    .allHymnTitle{
+        font-size: 18px;
+        margin-bottom: -20px;
+    }
+
+    table{
+        width: 98%;
+    }
+
+    th{
+        font-size: 13px;
+        letter-spacing: 0.02em;
+        padding: 0 4px;
+    }
+
+    td{
+        font-size: 12px;
+        padding: 10px 4px;
+    }
+
+    th:first-child,td:first-child{
+        padding: 0 8px;
+    }
+
+    thead tr:first-child{
+        height: 40px;
+    }
+
+    td:last-child , td:first-child{
+        width: 60px;
+    }
+
+    .pdfLink a:hover{
+        letter-spacing: 0;
+    }
 }

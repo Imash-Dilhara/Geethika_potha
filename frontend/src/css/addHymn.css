@@ -1,11 +1,16 @@
+*, *::before, *::after{
+    box-sizing: border-box;
+}
+
 .addHymnFormBox{
     background: url('assets/addHymn-background.jpg');
     background-position: center;
-    background-repeat: none;
+    background-repeat: no-repeat;
     background-size: cover;
     margin: 15px 10px;
     border-radius: 15px;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.674);
+    overflow: hidden;
 }
 
 .gradientBox{
@@ -23,13 +28,17 @@
     color: rgb(77, 77, 190);
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-size: 48px;
+    text-align: center;
+    margin-top: 50px;
 }
 
 .constraints{
     color: rgb(227, 163, 163);
-    margin: -20px 0 30px 0;
+    margin: 0px 0 30px 0;
     font-size: 16px;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    text-align: center;
+    padding: 0 12px;
 }
 
 .addHymnForm{
@@ -66,6 +75,7 @@
     font-family: monospace;
     border: 2px solid rgba(142, 142, 142, 0.301);
     transition: 0.4s;
+    min-width: 0;
 }
 
 .addHymnForm input:hover{
@@ -76,13 +86,14 @@
 .addHymnForm input:focus{
     outline: none;
     border: 2px solid rgb(0, 0, 158);
-    box-shadow: 0 0 20 px rgba(0, 0, 88, 0.514);
+    box-shadow: 0 0 20px rgba(0, 0, 88, 0.514);
     background-color: rgba(92, 92, 249, 0.231);
 }
 
 .singerNameBox{
     display: flex;
     justify-content: space-between;
+    gap: 12px;
 }
 
 .singerNameBox input{
@@ -112,6 +123,7 @@
 .uploadFileBox span{
     color: rgba(197, 196, 196, 0.742);
     margin-left: 10px;
+    word-break: break-all;
 }
 
 .addButton{
@@ -177,4 +189,114 @@
 small{
     color: red;
     font-family: monospace;
+}
+
+/* ---------- Laptop ---------- */
+@media (max-width: 1200px) {
+    .addHymnForm{
+        width: 75%;
+        padding: 30px 40px;
+    }
+}
+
+/* ---------- Tablet ---------- */
+@media (max-width: 900px) {
+    .addHymnFormBox h1{
+        font-size: 38px;
+    }
+
+    .addHymnForm{
+        width: 90%;
+        padding: 25px 30px;
+    }
+
+    .addHymnForm label{
+        font-size: 16px;
+    }
+
+    .addHymnForm input{
+        font-size: 16px;
+    }
+
+    .addButton button{
+        padding: 14px 40px;
+    }
+}
+
+/* ---------- Mobile ---------- */
+@media (max-width: 600px) {
+    .addHymnFormBox{
+        margin: 10px 6px;
+    }
+
+    .addHymnFormBox h1{
+        font-size: 28px;
+    }
+
+    .constraints{
+        font-size: 13px;
+        margin: 0px 0 20px 0;
+    }
+
+    .addHymnForm{
+        width: 94%;
+        padding: 20px 16px;
+        margin-bottom: 30px;
+    }
+
+    .addHymnForm label{
+        font-size: 15px;
+    }
+
+    .addHymnForm input{
+        font-size: 16px;
+        padding: 10px 14px;
+        border-radius: 12px;
+    }
+
+    .singerNameBox{
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .singerNameBox input{
+        width: 100%;
+    }
+
+    .uploadFileBox{
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .uploadFileBox span{
+        margin-left: 0;
+        font-size: 13px;
+    }
+
+    .addButton{
+        margin: 15px 0;
+        padding-top: 10px;
+    }
+
+    .addButton button{
+        padding: 12px 28px;
+        font-size: 16px;
+        gap: 12px;
+    }
+
+    .addButton button img{
+        width: 24px;
+        height: 24px;
+    }
+
+    .back-to-home-box{
+        padding-bottom: 30px;
+    }
+
+    .back-to-home-box button{
+        padding: 12px 30px;
+        font-size: 17px;
+    }
 }
