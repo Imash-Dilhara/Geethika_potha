@@ -8,6 +8,7 @@ import './css/navbar.css';
 function Navbar() {
     const location = useLocation();
 
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isRegisterOpen, setIsRegisterOpen] = useState(false);
     const [haveAccount, setHaveAccount] = useState(true);
     const [isClickAvatar, setIsClickAvatar] = useState(false);
@@ -37,6 +38,10 @@ function Navbar() {
 
         return () => clearInterval(interval);
     }, [isOtpSend , timer]);
+
+    useEffect(() => {
+        setIsMenuOpen(false);
+    }, [location.pathname]);
 
     const handleResendOtp = async() => {
         setIsResendOtp(false);
@@ -242,33 +247,49 @@ function Navbar() {
 
     return (
         <div>
-            <div className="bannerBox"> 
+            <div className="bannerBox">
                 <div className="bannerShadow">
                     <div className="logoName">
                         <Link to="/"><img src="assets/logo-white.png" alt="HymnFlow logo"/></Link>
                     </div>
+
                     <div className="pageName">
                         <h1 id="pageName">{pageTitle}</h1>
                     </div>
-                    <div className="linksName">
+                    <button
+                        className={`hamburger ${isMenuOpen ? 'open' : ''}`}
+                        onClick={() => setIsMenuOpen(!isMenuOpen)}
+                        aria-label="Toggle menu"
+                        aria-expanded={isMenuOpen}
+                    >
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
+
+                    <div className={`linksName ${isMenuOpen ? 'show' : ''}`}>
                         <ul>
                             <li className="navLink"><Link to="/">Home</Link></li>
                             <li className="navLink"><Link to="/about">About</Link></li>
                             <li className="navLink"><Link to="/contact">Contact</Link></li>
                             <li>
                                 {isLogin ? (
-                                    <div 
-                                        className="userAvatar" 
-                                        title={userName} 
-                                        onClick={() => setIsClickAvatar(true)}>
+                                    <div
+                                        className="userAvatar"
+                                        title={userName}
+                                        onClick={() => {
+                                            setIsClickAvatar(true);
+                                            setIsMenuOpen(false);
+                                        }}>
                                         {firstLetter}
                                     </div>
-                                ):(
-                                    <button 
-                                        className="registerBtn" 
+                                ) : (
+                                    <button
+                                        className="registerBtn"
                                         onClick={() => {
                                             setIsRegisterOpen(true);
                                             setErrors({});
+                                            setIsMenuOpen(false);
                                         }}>
                                         Sign In
                                     </button>

@@ -1,3 +1,13 @@
+/* ---------- Overflow fix ---------- */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
 .bannerBox{
     background-image: url('../assets/banner.jpg');
     background-size: cover;
@@ -360,6 +370,197 @@ small{
     color: rgba(10, 10, 10, 0.411);
     font-family: monospace;
     width: 40%;
+}
+
+.hamburger {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    flex-direction: column;
+    gap: 5px;
+    z-index: 1001;
+}
+
+.hamburger span {
+    display: block;
+    width: 26px;
+    height: 3px;
+    background: #fff;
+    border-radius: 2px;
+    transition: transform 0.3s, opacity 0.3s;
+}
+
+.hamburger.open span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+.hamburger.open span:nth-child(2) { opacity: 0; }
+.hamburger.open span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
+@media (max-width: 1144px) {
+    .bannerBox {
+        position: relative;
+        z-index: 1000;
+        height: auto !important;
+        min-height: 80px;
+    }
+
+    .bannerShadow {
+        position: relative;
+        height: auto !important;
+        min-height: 80px;
+    }
+
+    .linksName {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        width: 100%;
+        background: rgba(0, 0, 0, 0.95);
+        z-index: 1001;
+        margin: 0 !important;
+        border-radius: 0 0 12px 12px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    .linksName.show {
+        display: block;
+    }
+
+    .linksName ul {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 18px;
+        padding: 20px 0;
+        margin: 0;
+    }
+
+    .hamburger {
+        display: flex;
+        justify-self: end;
+        z-index: 1002;
+    }
+}
+
+@media (max-width: 1140px) {
+    .bannerShadow { 
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 16px;
+        position: relative;
+    }
+
+    .logoName img {
+        height: 100px;
+        width: 120px;
+    }
+
+    .pageName {
+        flex: 1;
+        text-align: center;
+    }
+
+    .pageName h1 {
+        font-size: 1.1rem;
+        margin: 0;
+    }
+
+    .hamburger {
+        display: flex;
+    }
+
+    .linksName {
+        display: none;
+        width: 100%;
+        order: 4;
+        background: rgba(0, 0, 0, 0.95);
+        border-radius: 0 0 8px 8px;
+        margin-top: 10px;
+    }
+
+    .linksName.show {
+        display: block;
+    }
+
+    .linksName ul {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 14px;
+        padding: 16px 0;
+        margin: 0;
+        list-style: none;
+    }
+
+    .linksName .navLink a {
+        font-size: 1.1rem;
+    }
+
+    .modalContent {
+        width: 92%;
+        max-width: 420px;
+        max-height: 90vh;
+        overflow-y: auto;
+        padding: 20px 16px;
+        box-sizing: border-box;
+    }
+
+    .modalContent h2 {
+        font-size: 1.3rem;
+    }
+
+    .form-group input {
+        width: 100%;
+        box-sizing: border-box;
+        font-size: 16px;
+        padding: 10px;
+    }
+
+    .formSubBtn {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+    }
+
+    .submit-btn {
+        width: 100%;
+    }
+
+    .clickOptionBox {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        align-items: center;
+    }
+
+    .otpBox {
+        font-size: 0.85rem;
+    }
+
+    .avatarContent {
+        width: 90%;
+        max-width: 320px;
+        box-sizing: border-box;
+    }
+}
+
+@media (max-width: 480px) {
+    .pageName h1 {
+        font-size: 0.95rem;
+    }
+
+    .logoName img {
+        height: 60px;
+        width: 60px;
+    }
+
+    .avatarHeader {
+        font-size: 1.2rem;
+    }
 }
 
 @keyframes slideDown {
