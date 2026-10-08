@@ -21,7 +21,7 @@ function Contact(){
                         </div>
                     </form>
                 </div>
-                <div className="contactWithUsBox formBox">
+                <div className="formBox contactWithUsBox">
                     <h1 className='title'>Contact With Us</h1>
                     <h3>Email :</h3>
                     <div className='contactContent'>
@@ -38,7 +38,7 @@ function Contact(){
                         <img src="assets/call.png" alt="Location image" />
                         <p>072 302 3095</p>
                     </div>
-                    <h3>Community Note :</h3>
+                    <h3>Community Note :</h3><br />
                     <p className='communityPara'>Whether you are a choir leader, worship coordinator, or a poetry enthusiast, your suggestions help us grow this digital sanctuary.</p>
                     <div className="socialMedia">
                         <img src="assets/fb.png" alt="" />
