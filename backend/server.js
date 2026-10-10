@@ -7,6 +7,12 @@ const app = express();
 const db = require('./db');
 const emailRoutes = require('./routes/emailRoutes');    
 
+//=========Test case ============
+app.get('/api/test', (req, res) => {
+  res.json({ message: "Backend is working!" });
+});
+//============================
+
 app.use(cors({
     origin: 'http://localhost:5173',
     credentials: true
