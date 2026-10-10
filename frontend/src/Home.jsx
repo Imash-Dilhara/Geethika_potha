@@ -46,7 +46,7 @@ function Home(){
                 <div className="searchContent">
                     <div className="searchBox">
                         <input type="text" className="searchBar" value={searchTerm} onChange={handleChange} placeholder="Search for a hymn..."/>
-                        <img src="assets/search-icon.png" className="searchIcon" alt="Search Icon"/>
+                        <img src="./assets/search-icon.png" className="searchIcon" alt="Search Icon"/>
                     </div>
 
                     {searchTerm && (
