@@ -49,7 +49,7 @@ function Navbar() {
         setMessage('Resending OTP to your email...');
 
          try {
-            const res = await axios.post('http://localhost:5000/api/send-otp', {
+            const res = await axios.post(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000'}/api/send-otp`, {
                 email: formData.email
             });
             if (res.data.success) {
@@ -72,7 +72,7 @@ function Navbar() {
             setLoading(true);
             setMessage('Sending OTP to your email...');
             try{
-                const res = await axios.post('http://localhost:5000/api/send-otp' , {email: formData.email});
+                const res = await axios.post(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000'}/api/send-otp` , {email: formData.email});
                 if(res.data.success){
                     setIsOtpSend(true);
                     setMessage('OTP sent to your email! Please check and enter the code.');
@@ -88,7 +88,7 @@ function Navbar() {
             setLoading(true);
             setMessage('Verifying your OTP, please wait...');
             try{
-                const res = await axios.post('http://localhost:5000/api/verify-otp' , {
+                const res = await axios.post(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000'}/api/verify-otp` , {
                     email: formData.email,
                     otp: formData.otp
                 });
@@ -150,7 +150,7 @@ function Navbar() {
 
         if (Object.keys(validationErrors).length === 0) {
             try{
-                const response = await fetch('http://localhost:5000/api/register',{
+                const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000'}/api/register`,{
                     method: 'POST',
                     headers: {
                         'Content-type':'application/json'
@@ -203,7 +203,7 @@ function Navbar() {
 
         if(Object.keys(validationErrors).length === 0){
             try{
-                const response = await fetch('http://localhost:5000/api/login' , {
+                const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000'}/api/login` , {
                     method:'POST',
                     headers:{
                         'Content-Type' : 'application/json'

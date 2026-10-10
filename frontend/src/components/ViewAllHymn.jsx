@@ -9,7 +9,7 @@ function ViewAllHymn() {
     const [filterHymn , setFilterHymn] = useState([]);
 
     useEffect(() => {
-        fetch('http://localhost:5000/api/getallhymns')
+        fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000'}/api/getallhymns`)
             .then(res => res.json())
             .then(data => {
                 setHymns(data);
@@ -27,7 +27,7 @@ function ViewAllHymn() {
         }
         
         try{
-            const res = await fetch(`http://localhost:5000/api/searchhymns?search=${value}`);
+            const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000'}/api/searchhymns?search=${value}`);
             if(!res.ok){
                 throw new Error('Search Error!');
             }
@@ -41,7 +41,7 @@ function ViewAllHymn() {
     
 
     useEffect(() => {
-        fetch('http://localhost:5000/api/getallhymns')
+        fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000'}/api/getallhymns`)
             .then(response => response.json())
             .then(data => setAllHymns(data))
             .catch(error => console.error("Error fetching data : ", error));
