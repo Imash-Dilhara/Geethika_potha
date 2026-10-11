@@ -183,9 +183,10 @@ app.get('/api/getallhymns' ,(req,res) => {
             return res.status(500).json({error : "Database error!"});
         }
 
+        const baseURL = `${req.protocol}://${req.get('host')}`;
         const hymnWithPDFURL = result.map(hymn => ({
             ...hymn,
-            pdfURL: hymn.pdf ? `http://localhost:5000/uploads/${hymn.pdf}` : null
+            pdfURL: hymn.pdf ? `${baseURL}/uploads/${hymn.pdf}` : null
         }));
 
         res.json(hymnWithPDFURL);
