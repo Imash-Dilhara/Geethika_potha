@@ -3,7 +3,7 @@
 }
 
 .addHymnFormBox{
-    background: url('assets/addHymn-background.jpg');
+    background: url('../../public/assets/addHymn-background.jpg');
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
