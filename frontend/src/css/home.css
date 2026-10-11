@@ -188,7 +188,7 @@ img{
 }
 
 .left{
-    background-image: url('assets/left-side-slot.jpg');
+    background-image: url('../../public/assets/left-side-slot.jpg');
     background-size: cover;
     background-position: center;
 }
@@ -208,13 +208,13 @@ img{
 }
 
 .right{
-    background-image: url('assets/right-side-slot.jpg');
+    background-image: url('../../public/assets/right-side-slot.jpg');
     background-size: cover;
     background-position: center;
 }
 
 .add{
-    background-image: url('assets/add-side-slot.jpg');
+    background-image: url('../../public/assets/add-side-slot.jpg');
     background-size: cover;
     background-position: center;
 }
