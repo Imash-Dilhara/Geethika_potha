@@ -186,7 +186,7 @@ app.post('/api/addhymn' ,veryfyToken,upload.single('pdf'),(req,res) => {
 });
 
 //Get Hymns
-app.get('/api/getallhymns' ,(req,res) => {
+app.get('/api/getallhymns' ,(req,res) => { 
     const query = "SELECT * FROM hymns ORDER BY title ASC";
 
     db.query(query , (e,result) => {
@@ -196,6 +196,7 @@ app.get('/api/getallhymns' ,(req,res) => {
         }
 
         const baseURL = `${req.protocol}://${req.get('host')}`;
+
         const hymnWithPDFURL = result.map(hymn => ({
             ...hymn,
             pdfURL: hymn.pdf ? `${baseURL}/uploads/${hymn.pdf}` : null
@@ -242,9 +243,10 @@ app.get('/api/searchhymns' , (req,res) => {
             return res.status(500).json({error: 'Database Error!'});
         }
 
+        const baseURL = `${req.protocol}://${req.get('host')}`;
         const hymnWithPDFURL = result.map(hymn => ({
             ...hymn,
-            pdfURL: hymn.pdf ? `http://localhost:5000/uploads/${hymn.pdf}` : null
+            pdfURL: hymn.pdf ? `${baseURL}/uploads/${hymn.pdf}` : null
         }));
 
         res.json(hymnWithPDFURL);
