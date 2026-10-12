@@ -256,46 +256,45 @@ function Navbar() {
                     <div className="pageName">
                         <h1 id="pageName">{pageTitle}</h1>
                     </div>
-                    <button
-                        className={`hamburger ${isMenuOpen ? 'open' : ''}`}
-                        onClick={() => setIsMenuOpen(!isMenuOpen)}
-                        aria-label="Toggle menu"
-                        aria-expanded={isMenuOpen}
-                    >
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </button>
-
-                    <div className={`linksName ${isMenuOpen ? 'show' : ''}`}>
-                        <ul>
-                            <li className="navLink"><Link to="/">Home</Link></li>
-                            <li className="navLink"><Link to="/about">About</Link></li>
-                            <li className="navLink"><Link to="/contact">Contact</Link></li>
-                            <li>
-                                {isLogin ? (
-                                    <div
-                                        className="userAvatar"
-                                        title={userName}
-                                        onClick={() => {
-                                            setIsClickAvatar(true);
-                                            setIsMenuOpen(false);
-                                        }}>
-                                        {firstLetter}
-                                    </div>
-                                ) : (
-                                    <button
-                                        className="registerBtn"
-                                        onClick={() => {
-                                            setIsRegisterOpen(true);
-                                            setErrors({});
-                                            setIsMenuOpen(false);
-                                        }}>
-                                        Sign In
-                                    </button>
-                                )}
-                            </li>
-                        </ul>
+                    <div className="linkContnt-and-avatarContent">
+                        <button
+                            className={`hamburger ${isMenuOpen ? 'open' : ''}`}
+                            onClick={() => setIsMenuOpen(!isMenuOpen)}
+                            aria-label="Toggle menu"
+                            aria-expanded={isMenuOpen}
+                        >
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </button>
+                        <div className={`linksName ${isMenuOpen ? 'show' : ''}`}>
+                            <ul>
+                                <li className="navLink"><Link to="/">Home</Link></li>
+                                <li className="navLink"><Link to="/about">About</Link></li>
+                                <li className="navLink"><Link to="/contact">Contact</Link></li>
+                            </ul>
+                        </div>
+                        {isLogin ? (
+                            <div
+                                className="userAvatar"
+                                title={userName}
+                                onClick={() => {
+                                    setIsClickAvatar(true);
+                                    setIsMenuOpen(false);
+                                }}>
+                                {firstLetter}
+                            </div>
+                        ) : (
+                            <button
+                                className="registerBtn"
+                                onClick={() => {
+                                    setIsRegisterOpen(true);
+                                    setErrors({});
+                                    setIsMenuOpen(false);
+                                }}>
+                                Sign In
+                            </button>
+                        )}
                     </div>
                 </div>
             </div>
@@ -484,8 +483,10 @@ function Navbar() {
             {isClickAvatar && (
                 <div className="avatarBox" onClick={() => setIsClickAvatar(false)}>
                     <div className="avatarContent" onClick={(e) => e.stopPropagation()}>
-                        <button className="closeBtn" onClick={() => setIsClickAvatar(false)}>✕</button>
-                        <h1 className="avatarHeader">Hello {userName},</h1>
+                        <div className="avaterContentTitleHeder">
+                            <h1 className="avatarHeader">Hello {userName},</h1>
+                            <button className="closeBtn" onClick={() => setIsClickAvatar(false)}>✕</button>
+                        </div>
                         <div className="avatar-content-box">
                             <img src="assets/profile-icon.png" alt="Profile Icon"/>
                             <p>View Profile</p>
