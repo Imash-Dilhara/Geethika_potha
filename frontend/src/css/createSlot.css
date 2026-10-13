@@ -95,7 +95,36 @@ tbody td{
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.368);
 }
 
+.fileNameBox{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.fileName-field{
+    width: 60%;
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: 1px solid rgba(0, 0, 0, 0.237);
+    font-size: 18px;
+    transition: 0.3s;
+}
+
+.fileName-field:focus{
+    outline: none;
+    border-color: rgba(2, 2, 117, 0.783);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.242);
+    background-color: rgba(77, 77, 251, 0.153);
+    letter-spacing: 1px;
+}
+
 @media (max-width : 900px) {
+
+    .fileName-field{
+        width: 90%;
+    }
+
     .pdf-pptx-button-box{
         flex-direction: column;
         align-items: center;

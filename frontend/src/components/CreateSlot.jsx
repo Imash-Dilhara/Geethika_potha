@@ -36,6 +36,7 @@ function CreateSlot() {
     const [searchTerm, setSearchTerm] = useState('');
     const [selected, setSelected] = useState([]);
     const [busy, setBusy] = useState(false);
+    const [fileName , setFileName] = useState('Hymns-Collection');
 
     useEffect(() => {
         fetch(`${API}/api/getallhymns`)
@@ -46,6 +47,11 @@ function CreateSlot() {
             })
             .catch((e) => console.error('Error fetching data:', e));
     }, []);
+
+    const fileNameHandle = (e) => {
+        const value = e.target.value;
+        setFileName(value);
+    }
 
     const handleChange = async (e) => {
         const value = e.target.value;
@@ -116,7 +122,7 @@ function CreateSlot() {
             }
 
             const mergedBytes = await mergedPdf.save();
-            saveBlob(new Blob([mergedBytes], { type: 'application/pdf' }), 'Hymns-Collection.pdf');
+            saveBlob(new Blob([mergedBytes], { type: 'application/pdf' }), `${fileName}.pdf`);
         } catch (err) {
             console.error(err);
             alert('Can not create PDF.');
@@ -155,7 +161,7 @@ function CreateSlot() {
                         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
                         await page.render({ canvasContext: ctx, viewport }).promise;
-                        
+
                         const ratio = viewport.width / viewport.height;
                         let w = SLIDE_W;
                         let h = w / ratio;
@@ -273,6 +279,7 @@ function CreateSlot() {
                 </h2>
 
                 {selected.length > 0 && (
+                    <>
                     <table border={1}>
                         <thead>
                             <tr>
@@ -293,6 +300,10 @@ function CreateSlot() {
                             ))}
                         </tbody>
                     </table>
+                    <div className="fileNameBox">
+                        <input className='fileName-field' type="text" placeholder='Enter file name' onChange={fileNameHandle} />
+                    </div>
+                    </>
                 )}
             </div>
 
