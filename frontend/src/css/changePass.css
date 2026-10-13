@@ -1,8 +1,10 @@
 .changePass-content-box{
-    padding: 0;
+    padding: 20px;
     margin: 0;
     width: 100%;
-    height: 100vh;
+    min-height: 100vh;
+    min-height: 100dvh;
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
     background: linear-gradient(to bottom, rgba(43, 43, 215, 0.895) 5%, rgb(0, 0, 40) 100%);
@@ -16,11 +18,14 @@
     gap: 30px;
     justify-content: center;
     align-items: center;
+    flex-wrap: wrap;
+    text-align: center;
 }
 
 .headerBox img{
     width: 180px;
-    height: 150px;
+    height: auto;
+    max-width: 100%;
 }
 
 .welcomeMsg{
@@ -29,6 +34,7 @@
     letter-spacing: 2px;
     color: #f8f7f7af;
     transition: 0.3s;
+    margin: 0;
 }
 
 .welcomeMsg:hover{
@@ -46,6 +52,7 @@
     flex-direction: column;
     text-align: center;
     gap: 20px;
+    box-sizing: border-box;
 }
 
 .changePassFormName{
@@ -79,6 +86,7 @@
 
 .change-pass-form-field input{
     width: 100%;
+    box-sizing: border-box;
     padding: 10px;
     border-radius: 8px;
     border: 1px solid rgba(255, 255, 255, 0.187);
@@ -109,7 +117,7 @@
 .change-pass-form-field button{
     width: 40%;
     padding: 10px;
-    margin: 10px 0 ;
+    margin: 10px 0;
     border-radius: 5px;
     border: none;
     background: rgb(243, 243, 243);
@@ -128,6 +136,140 @@
     letter-spacing: 2px;
 }
 
-.welcomeMsg , .change-pass-form-box h1{
+.welcomeMsg, .change-pass-form-box h1{
     cursor: default;
+}
+
+
+/* ================= RESPONSIVE ================= */
+
+/* ---------- Laptop ---------- */
+@media (max-width: 1200px) {
+    .changePass-content-box{
+        gap: 40px;
+    }
+
+    .change-pass-form-box{
+        width: 50%;
+        padding: 30px 40px;
+    }
+}
+
+/* ---------- Tablet ---------- */
+@media (max-width: 900px) {
+    .changePass-content-box{
+        gap: 35px;
+    }
+
+    .headerBox img{
+        width: 150px;
+    }
+
+    .welcomeMsg{
+        font-size: 38px;
+    }
+
+    .change-pass-form-box{
+        width: 70%;
+        padding: 25px 30px;
+    }
+
+    .changePassFormName{
+        font-size: 22px;
+    }
+
+    .change-pass-form-field button{
+        width: 50%;
+        padding: 12px;
+    }
+}
+
+/* ---------- Mobile ---------- */
+@media (max-width: 600px) {
+    .changePass-content-box{
+        padding: 15px 10px;
+        gap: 25px;
+    }
+
+    .headerBox{
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .headerBox img{
+        width: 110px;
+    }
+
+    .welcomeMsg{
+        font-size: 26px;
+        letter-spacing: 1px;
+    }
+
+    .change-pass-form-box{
+        width: 94%;
+        padding: 20px 16px;
+        gap: 15px;
+    }
+
+    .changePassFormName{
+        font-size: 20px;
+        margin-bottom: 10px;
+        letter-spacing: 1px;
+    }
+
+    .change-pass-form-box form{
+        gap: 18px;
+    }
+
+    .change-pass-form-field small{
+        font-size: 13px;
+    }
+
+    .change-pass-form-field input{
+        font-size: 16px;
+        padding: 10px 14px;
+        border-radius: 12px;
+    }
+
+    .change-pass-form-field button{
+        width: 100%;
+        padding: 12px 28px;
+        font-size: 17px;
+    }
+}
+
+/* ---------- Small phones ---------- */
+@media (max-width: 380px) {
+    .headerBox img{
+        width: 90px;
+    }
+
+    .welcomeMsg{
+        font-size: 22px;
+    }
+
+    .change-pass-form-box{
+        width: 100%;
+        padding: 15px 12px;
+    }
+
+    .changePassFormName{
+        font-size: 18px;
+    }
+}
+
+/* ---------- Touch devices (hover effects ona na) ---------- */
+@media (hover: none) {
+    .welcomeMsg:hover{
+        letter-spacing: 2px;
+        color: #f8f7f7af;
+    }
+
+    .change-pass-form-box:hover .changePassFormName{
+        letter-spacing: 2px;
+    }
+
+    .change-pass-form-field button:hover{
+        letter-spacing: normal;
+    }
 }
