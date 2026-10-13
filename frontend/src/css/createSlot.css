@@ -1,11 +1,23 @@
-.createSlot{
-    padding: 100px 0;
+.searchResultItem{
     display: flex;
-    align-items: center;
-    justify-content: center;
+    justify-content: space-between;
 }
 
-.createSlot h1{
-    color: red;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
+.searchResultItem img{
+    width: 20px;
+    height: 20px;
+}
+
+.checkBox-field{
+    text-align: center;
+}
+
+.checkBox{
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+tbody td{
+    cursor: default;
 }
