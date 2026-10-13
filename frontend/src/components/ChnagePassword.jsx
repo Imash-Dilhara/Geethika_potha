@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams , Link } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 import { changePassword } from '../utils/creat-account-validation';
 import '../css/changePass.css';
@@ -104,14 +104,11 @@ function ChangePassword(){
                             <button>Change</button>
                         </div>
                     </form>
+                <div className='afterChangedBox'>
+                    <Link to='/' target="_blank" rel="noopener noreferrer" className='back-to-homePage'>Back to Home page</Link>
                 </div>
             </div>
-
-            {isChange && (
-                <div className='afterChangedBox'>
-                    
                 </div>
-            )}
         </>
     );
 }

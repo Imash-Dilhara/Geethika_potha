@@ -140,6 +140,16 @@
     cursor: default;
 }
 
+.back-to-homePage{
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    color: rgba(255, 255, 255, 0.76);
+}
+
+.back-to-homePage:hover{
+    color: rgba(1, 1, 97, 0.895);
+    letter-spacing: 2px;
+}
+
 
 /* ================= RESPONSIVE ================= */
 
