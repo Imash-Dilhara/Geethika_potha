@@ -19,7 +19,6 @@ function CreateSlot() {
         fetch(`${API}/api/getallhymns`)
             .then(res => res.json())
             .then(data => {
-                console.log('First hymn:', data[0]);
                 setHymns(data);
                 setFilterHymn(data);
             })
