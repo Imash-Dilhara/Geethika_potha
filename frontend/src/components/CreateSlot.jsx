@@ -63,6 +63,15 @@ function CreateSlot() {
         return String(index + 1).padStart(3, '0');
     };
 
+
+    //Create to PDF
+    const downloadMargePDF = () => {
+    };
+
+    //Create to PPTX
+    const downloadMargePPTX = () => {
+    };
+
     return (
         <div className="tableBox">
             <div className="searchHymnBox">
@@ -147,10 +156,10 @@ function CreateSlot() {
                         </thead>
                         <tbody>
                             {selected.map((hymn) => (
-                                <tr key={getId(hymn)}>
+                                <tr className='selected-table-data-row' key={getId(hymn)}>
                                     <td>{getHymnNo(hymn)}</td>
                                     <td>{hymn.title}</td>
-                                    <td className="checkBox-field">
+                                    <td className="checkBox-field checkBox-remove">
                                         <button onClick={() => toggleHymn(hymn)}>✕</button>
                                     </td>
                                 </tr>
@@ -158,6 +167,11 @@ function CreateSlot() {
                         </tbody>
                     </table>
                 )}
+            </div>
+
+            <div className="pdf-pptx-button-box">
+                <button className='pdfBtnGenerate' onClick={downloadMargePDF} disabled={selected.length === 0}>Create to PDF</button>
+                <button className='pptxBtnGenerate' onClick={downloadMargePPTX} disabled={selected.length === 0}>Create to PPTX</button>
             </div>
 
             <div className="back-to-home-box">

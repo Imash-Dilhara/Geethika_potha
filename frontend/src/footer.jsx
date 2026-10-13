@@ -19,7 +19,7 @@ function Footer(){
                         </ul>
                     </div>
                     <div className="Contact componentsBox-element">
-                        <address>NIDS PLC,<br/>Weragoda, Kahawa</address>
+                        <address>NIDS PVT,<br/>Weragoda, Kahawa</address>
                         <p>Email: info@hymnflow.com</p>
                         <p>Phone: (76) 079 5982</p>
                     </div>

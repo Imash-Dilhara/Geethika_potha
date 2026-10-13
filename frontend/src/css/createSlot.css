@@ -18,6 +18,61 @@
     cursor: pointer;
 }
 
+.checkBox-remove button{
+    border: none;
+    background-color: transparent;
+    font-weight: bold;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.checkBox-remove button:hover{
+    color: red;
+}
+
+.selected-table-data-row:hover{
+    background-color: rgba(255, 0, 0, 0.253);
+    letter-spacing: 1px;
+}
+
 tbody td{
     cursor: default;
+}
+
+.pdf-pptx-button-box{
+    display: flex;
+    justify-content: space-around;
+    width: 40%;
+}
+
+.pdf-pptx-button-box button{
+    width: 40%;
+    height: auto;
+    padding: 15px 0;
+    border: none;
+    border-radius: 50px;
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.295);
+    transition: 0.3s;
+}
+
+.pdfBtnGenerate{
+    background-color: rgba(9, 9, 255, 0.76);
+}
+
+.pdfBtnGenerate:hover{
+    background-color: rgba(0, 0, 128, 0.95);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.368);
+}
+
+.pptxBtnGenerate{
+    background-color: rgba(249, 26, 26, 0.742);
+}
+
+.pptxBtnGenerate:hover{
+    background-color: rgba(114, 2, 2, 0.922);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.368);
 }
