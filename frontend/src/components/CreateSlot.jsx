@@ -65,11 +65,12 @@ function CreateSlot() {
 
 
     //Create to PDF
-    const downloadMargePDF = () => {
+    const downloadMargePDF = async() => {
+        
     };
 
     //Create to PPTX
-    const downloadMargePPTX = () => {
+    const downloadMargePPTX = async() => {
     };
 
     return (
