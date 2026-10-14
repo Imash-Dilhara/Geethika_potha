@@ -1,7 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './css/about.css';
 
 function About(){
+
+    useEffect (() => {
+        document.title = 'HymnFlow | About';
+    } , []);
+
     return(
         <>
             <div className="about_body">
