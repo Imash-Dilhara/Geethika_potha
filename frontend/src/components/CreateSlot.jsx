@@ -188,7 +188,7 @@ function CreateSlot() {
             }
 
             if (slideCount === 0) {
-                alert('Slides hadanna puluwan PDF ekak naha.');
+                alert('No PDF files found to generate slides.');
                 return;
             }
 

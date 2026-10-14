@@ -5,7 +5,9 @@ const multer = require('multer');
 const path = require('path');
 const app = express();
 const db = require('./db');
-const emailRoutes = require('./routes/emailRoutes');    
+const emailRoutes = require('./routes/emailRoutes');
+
+app.set('trust proxy' , 1);
 
 //=========Test case ============
 app.get('/api/test', (req, res) => {
