@@ -9,6 +9,8 @@ function Home(){
     const [filterHymn , setFilterHymn] = useState([]);
 
     useEffect(() => {
+        document.title = 'HymnFlow | Home';
+
         fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000'}/api/getallhymns`)
             .then(res => res.json())
             .then(data => {
