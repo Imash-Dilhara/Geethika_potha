@@ -17,7 +17,7 @@ app.get('/api/test', (req, res) => {
 
 const allowedOrigins = [
   'http://localhost:5173',
-  'https://geethika-potha.vercel.app'
+  'https://hymnflow.vercel.app'
 ];
 
 //CORS 
