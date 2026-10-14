@@ -50,6 +50,8 @@ function ViewAllHymn() {
     useEffect(() => {
         const urls = {};
 
+        document.title = 'HymnFlow | View Hymn';
+
         allHymns.forEach((hymn, index) => {
             if (hymn.pdf && hymn.pdf.data) {
                 const uint8Array = new Uint8Array(hymn.pdf.data);

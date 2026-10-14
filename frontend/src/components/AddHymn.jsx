@@ -1,9 +1,14 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { validationAddHymn } from '../utils/creat-account-validation';
 import '../css/addHymn.css';
 
 function AddHymn() { 
+
+    useEffect (() => {
+        document.title = 'HymnFlow | Add Hymn';
+    } , []);
+
     const [file, setFile] = useState(null);
 
     const [formData , setFormData] = useState({

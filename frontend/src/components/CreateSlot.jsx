@@ -39,6 +39,8 @@ function CreateSlot() {
     const [fileName , setFileName] = useState('Hymns-Collection');
 
     useEffect(() => {
+        document.title = 'HymnFlow | Create Slot';
+
         fetch(`${API}/api/getallhymns`)
             .then((res) => res.json())
             .then((data) => {
