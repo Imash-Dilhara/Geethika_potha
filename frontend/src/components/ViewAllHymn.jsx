@@ -109,7 +109,7 @@ function ViewAllHymn() {
                             <tr key={hymn.id || index}>
                                 <td>{String(index + 1).padStart(3,"0")}</td>
                                 <td>{hymn.title}</td>
-                                <td>{hymn.singerFname}</td>
+                                <td>{hymn.singerFname} {hymn.singerLname === 'Unknown' ? '' : hymn.singerLname}</td>
                                 <td className='pdfLink'>
                                     {hymn.pdfURL ? (
                                         <a href={hymn.pdfURL} target='_blank' rel='noopener noreferrer'>View PDF</a>
