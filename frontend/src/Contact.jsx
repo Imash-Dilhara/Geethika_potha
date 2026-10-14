@@ -1,7 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './css/contact.css';
 
 function Contact(){
+
+    useEffect(() => {
+        document.title = 'HymnFlow | Contact';
+    },[]);
+
     return(
         <>
             <div className="contact_body">
