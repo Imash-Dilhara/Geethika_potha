@@ -235,9 +235,6 @@ function Navbar() {
                         userPassword: ''
                     });
                 }
-                
-                alert(data.message);
-
             }catch(e){
                 console.log(e.message);
                 alert("Server Error, Please try again later!");
