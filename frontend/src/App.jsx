@@ -1,8 +1,11 @@
-import React from "react";
+import React , { Suspense , lazy } from "react";
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+
+const Home = lazy(() => import ('./Home.jsx'));
+
 import Navbar from "./navbar.jsx";
 import Footer from './footer.jsx';
-import Home from './Home.jsx';
+// import Home from './Home.jsx';
 import About from './About.jsx';
 import Contact from './Contact.jsx';
 import AddHymn from "./components/AddHymn.jsx";
@@ -30,12 +33,14 @@ function App(){
             <ScrollToTop />
 
             <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/about" element={<About />} />
-                <Route path="/contact" element={<Contact />} />
-                <Route path="/addHymn" element={<AddHymn />} />
-                <Route path="/viewallhymn" element={<ViewAllHymn />} />
-                <Route path="/createHymnSlot" element={<CreateHymnSolt />} />
+                <Suspense fallback={<div className="loader-wrap"><div className="spinner"></div></div>}>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/about" element={<About />} />
+                    <Route path="/contact" element={<Contact />} />
+                    <Route path="/addHymn" element={<AddHymn />} />
+                    <Route path="/viewallhymn" element={<ViewAllHymn />} />
+                    <Route path="/createHymnSlot" element={<CreateHymnSolt />} />
+                </Suspense>
             </Routes>
 
             <Footer />
