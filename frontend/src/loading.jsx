@@ -1,4 +1,4 @@
-import '../css/loading.css';
+import './css/loading.css';
 
 function Loading({ text = 'Loading...' }) {
     return (
