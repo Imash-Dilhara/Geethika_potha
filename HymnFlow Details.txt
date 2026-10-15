@@ -1,0 +1,8 @@
+HymnFlow app password : iwqnwburimhuhyxg
+
+
+Brevo API Key : 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
+
+Db host : Aiven
+Backend host : Render
+Frontend host : vercel
