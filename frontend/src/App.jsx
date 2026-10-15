@@ -2,6 +2,7 @@ import React , { Suspense , lazy } from "react";
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 const Home = lazy(() => import ('./Home.jsx'));
+const ViewAllHymn = lazy(() => import ('./components/ViewAllHymn.jsx'));
 
 import Navbar from "./navbar.jsx";
 import Footer from './footer.jsx';
@@ -10,7 +11,7 @@ import About from './About.jsx';
 import Contact from './Contact.jsx';
 import AddHymn from "./components/AddHymn.jsx";
 import ScrollToTop from "./components/ScrollToTop.jsx";
-import ViewAllHymn from "./components/ViewAllHymn.jsx";
+// import ViewAllHymn from "./components/ViewAllHymn.jsx";
 import CreateHymnSolt from "./components/CreateSlot.jsx";
 import ChangePassword from "./components/ChnagePassword.jsx";
 
