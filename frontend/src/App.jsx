@@ -32,16 +32,16 @@ function App(){
             <Navbar />
             <ScrollToTop />
 
-            <Routes>
-                <Suspense fallback={<div className="loader-wrap"><div className="spinner"></div></div>}>
+            <Suspense fallback={<div className="loader-wrap"><div className="spinner"></div></div>}>
+                <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/about" element={<About />} />
                     <Route path="/contact" element={<Contact />} />
                     <Route path="/addHymn" element={<AddHymn />} />
                     <Route path="/viewallhymn" element={<ViewAllHymn />} />
                     <Route path="/createHymnSlot" element={<CreateHymnSolt />} />
-                </Suspense>
-            </Routes>
+                </Routes>
+            </Suspense>
 
             <Footer />
         </>
