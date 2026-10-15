@@ -4,6 +4,7 @@ import { PDFDocument } from 'pdf-lib';
 import PptxGenJS from 'pptxgenjs';
 import * as pdfjsLib from 'pdfjs-dist';
 import pdfWorker from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
+import Loading from '../components/Loading';
 import '../css/createSlot.css';
 import '../css/viewAllHymn.css';
 
@@ -36,7 +37,8 @@ function CreateSlot() {
     const [searchTerm, setSearchTerm] = useState('');
     const [selected, setSelected] = useState([]);
     const [busy, setBusy] = useState(false);
-    const [fileName , setFileName] = useState('Hymns-Collection');
+    const [fileName, setFileName] = useState('Hymns-Collection');
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         document.title = 'HymnFlow | Create Slot';
@@ -47,13 +49,13 @@ function CreateSlot() {
                 setHymns(data);
                 setFilterHymn(data);
             })
-            .catch((e) => console.error('Error fetching data:', e));
+            .catch((e) => console.error('Error fetching data:', e))
+            .finally(() => setLoading(false));
     }, []);
 
     const fileNameHandle = (e) => {
-        const value = e.target.value;
-        setFileName(value);
-    }
+        setFileName(e.target.value);
+    };
 
     const handleChange = async (e) => {
         const value = e.target.value;
@@ -93,6 +95,8 @@ function CreateSlot() {
         return String(index + 1).padStart(3, '0');
     };
 
+    const getSafeFileName = () => fileName.trim() || 'Hymns-Collection';
+
     // Create PDF
     const downloadMargePDF = async () => {
         if (selected.length === 0 || busy) return;
@@ -124,7 +128,7 @@ function CreateSlot() {
             }
 
             const mergedBytes = await mergedPdf.save();
-            saveBlob(new Blob([mergedBytes], { type: 'application/pdf' }), `${fileName}.pdf`);
+            saveBlob(new Blob([mergedBytes], { type: 'application/pdf' }), `${getSafeFileName()}.pdf`);
         } catch (err) {
             console.error(err);
             alert('Can not create PDF.');
@@ -198,7 +202,7 @@ function CreateSlot() {
                 alert('Me hymns skip una: ' + failed.join(', '));
             }
 
-            await pptx.writeFile({ fileName: 'slot-hymns.pptx' });
+            await pptx.writeFile({ fileName: `${getSafeFileName()}.pptx` });
         } catch (err) {
             console.error(err);
             alert('PPTX hadanna bari una.');
@@ -248,31 +252,35 @@ function CreateSlot() {
                 <h1 className="title allHymnTitle">All Hymn</h1>
             </div>
 
-            <table border={1}>
-                <thead>
-                    <tr>
-                        <th>No</th>
-                        <th>Title</th>
-                        <th className="checkBox-field">Select</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {hymns.map((hymn, index) => (
-                        <tr key={getId(hymn)}>
-                            <td>{String(index + 1).padStart(3, '0')}</td>
-                            <td>{hymn.title}</td>
-                            <td className="checkBox-field">
-                                <input
-                                    className="checkBox"
-                                    type="checkbox"
-                                    checked={isSelected(hymn)}
-                                    onChange={() => toggleHymn(hymn)}
-                                />
-                            </td>
+            {loading ? (
+                <Loading text="Loading hymns..." />
+            ) : (
+                <table border={1}>
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Title</th>
+                            <th className="checkBox-field">Select</th>
                         </tr>
-                    ))}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        {hymns.map((hymn, index) => (
+                            <tr key={getId(hymn)}>
+                                <td>{String(index + 1).padStart(3, '0')}</td>
+                                <td>{hymn.title}</td>
+                                <td className="checkBox-field">
+                                    <input
+                                        className="checkBox"
+                                        type="checkbox"
+                                        checked={isSelected(hymn)}
+                                        onChange={() => toggleHymn(hymn)}
+                                    />
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            )}
 
             <div className="selectedHymns">
                 <h2>
@@ -282,29 +290,35 @@ function CreateSlot() {
 
                 {selected.length > 0 && (
                     <>
-                    <table border={1}>
-                        <thead>
-                            <tr>
-                                <th>No</th>
-                                <th>Title</th>
-                                <th className="checkBox-field">Remove</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {selected.map((hymn) => (
-                                <tr className="selected-table-data-row" key={getId(hymn)}>
-                                    <td>{getHymnNo(hymn)}</td>
-                                    <td>{hymn.title}</td>
-                                    <td className="checkBox-field checkBox-remove">
-                                        <button onClick={() => toggleHymn(hymn)}>✕</button>
-                                    </td>
+                        <table border={1}>
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Title</th>
+                                    <th className="checkBox-field">Remove</th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                    <div className="fileNameBox">
-                        <input className='fileName-field' type="text" placeholder='Enter file name' onChange={fileNameHandle} />
-                    </div>
+                            </thead>
+                            <tbody>
+                                {selected.map((hymn) => (
+                                    <tr className="selected-table-data-row" key={getId(hymn)}>
+                                        <td>{getHymnNo(hymn)}</td>
+                                        <td>{hymn.title}</td>
+                                        <td className="checkBox-field checkBox-remove">
+                                            <button onClick={() => toggleHymn(hymn)}>✕</button>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                        <div className="fileNameBox">
+                            <input
+                                className="fileName-field"
+                                type="text"
+                                placeholder="Enter file name"
+                                value={fileName}
+                                onChange={fileNameHandle}
+                            />
+                        </div>
                     </>
                 )}
             </div>
@@ -327,7 +341,9 @@ function CreateSlot() {
             </div>
 
             <div className="back-to-home-box">
-                <Link to="/"><button>Back to Home</button></Link>
+                <Link to="/">
+                    <button>Back to Home</button>
+                </Link>
             </div>
         </div>
     );
