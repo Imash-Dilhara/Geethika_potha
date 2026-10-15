@@ -1,92 +1,85 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import Loading from '../components/Loading';
 import '../css/viewAllHymn.css';
+
+const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
 
 function ViewAllHymn() {
     const [allHymns, setAllHymns] = useState([]);
-    const [searchTerm  , setSearchTerm] = useState('');
-    const [hymns , setHymns] = useState([]);
-    const [filterHymn , setFilterHymn] = useState([]);
+    const [filterHymn, setFilterHymn] = useState([]);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000'}/api/getallhymns`)
+        document.title = 'HymnFlow | View Hymn';
+
+        fetch(`${API_BASE}/api/getallhymns`)
             .then(res => res.json())
             .then(data => {
-                setHymns(data);
+                setAllHymns(data);
                 setFilterHymn(data);
-            }).catch(e => console.error(e));
-    } , []);
+            })
+            .catch(error => console.error('Error fetching data : ', error))
+            .finally(() => setLoading(false));
+    }, []);
 
-    const handleChange = async(e) => {
+    const handleChange = async (e) => {
         const value = e.target.value;
         setSearchTerm(value);
 
-        if(!value){
-            setFilterHymn(hymns);
+        if (!value) {
+            setFilterHymn(allHymns);
             return;
         }
-        
-        try{
-            const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000'}/api/searchhymns?search=${value}`);
-            if(!res.ok){
+
+        try {
+            const res = await fetch(
+                `${API_BASE}/api/searchhymns?search=${encodeURIComponent(value)}`
+            );
+            if (!res.ok) {
                 throw new Error('Search Error!');
             }
             const data = await res.json();
             setFilterHymn(data);
-        }catch(e){
+        } catch (e) {
             console.error(e);
         }
     };
 
-    
-
-    useEffect(() => {
-        fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000'}/api/getallhymns`)
-            .then(response => response.json())
-            .then(data => setAllHymns(data))
-            .catch(error => console.error("Error fetching data : ", error));
-    }, []);
-
-    useEffect(() => {
-        const urls = {};
-
-        document.title = 'HymnFlow | View Hymn';
-
-        allHymns.forEach((hymn, index) => {
-            if (hymn.pdf && hymn.pdf.data) {
-                const uint8Array = new Uint8Array(hymn.pdf.data);
-                const blob = new Blob([uint8Array], { type: 'application/pdf' });
-                urls[hymn.r_no || index] = URL.createObjectURL(blob);
-            }
-        });
-
-        return () => {
-            Object.values(urls).forEach(url => URL.revokeObjectURL(url));
-        };
-    }, [allHymns]);
-
     return (
         <div className="tableBox">
-            <div className='searchHymnBox'>
-                <h1 className='title'>Search Hymn</h1>
+            <div className="searchHymnBox">
+                <h1 className="title">Search Hymn</h1>
                 <div className="searchContent">
                     <div className="searchBox">
-                        <input 
+                        <input
                             type="text"
-                            className="searchBar" 
-                            value={searchTerm} 
+                            className="searchBar"
+                            value={searchTerm}
                             onChange={handleChange}
                             placeholder="Search for a hymn..."
                         />
-                        <img src="assets/search-icon.png" className="searchIcon" alt="Search Icon"/>
+                        <img
+                            src="assets/search-icon.png"
+                            className="searchIcon"
+                            alt="Search Icon"
+                        />
                     </div>
-        
+
                     {searchTerm && (
                         <div className="searchResult">
                             {filterHymn.length > 0 ? (
-                                filterHymn.map(hymn => (
-                                    <div className="searchResultItem" key = {hymn.h_no}>
-                                        <a href={hymn.pdfURL} target="_blank" rel="noopener noreferrer">
+                                filterHymn.map((hymn, index) => (
+                                    <div
+                                        className="searchResultItem"
+                                        key={hymn.h_no || hymn.id || index}
+                                    >
+                                        <a
+                                            href={hymn.pdfURL}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        >
                                             <h3>{hymn.title}</h3>
                                         </a>
                                     </div>
@@ -97,39 +90,53 @@ function ViewAllHymn() {
                         </div>
                     )}
                 </div>
-                <h1 className='title allHymnTitle'>All Hymn</h1>
+                <h1 className="title allHymnTitle">All Hymn</h1>
             </div>
 
-            <table border={1}>
-                <thead>
-                    <tr>
-                        <th>No</th>
-                        <th>Title</th>
-                        <th>Artist</th>
-                        <th>Lyrics</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {allHymns.map((hymn, index) => {                
-                        return (
+            {loading ? (
+                <Loading text="Loading hymns..." />
+            ) : (
+                <table border={1}>
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Title</th>
+                            <th>Artist</th>
+                            <th>Lyrics</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {allHymns.map((hymn, index) => (
                             <tr key={hymn.id || index}>
-                                <td>{String(index + 1).padStart(3,"0")}</td>
+                                <td>{String(index + 1).padStart(3, '0')}</td>
                                 <td>{hymn.title}</td>
-                                <td>{hymn.singerFname} {hymn.singerLname === 'Unknown' ? '' : hymn.singerLname}</td>
-                                <td className='pdfLink'>
+                                <td>
+                                    {hymn.singerFname}{' '}
+                                    {hymn.singerLname === 'Unknown' ? '' : hymn.singerLname}
+                                </td>
+                                <td className="pdfLink">
                                     {hymn.pdfURL ? (
-                                        <a href={hymn.pdfURL} target='_blank' rel='noopener noreferrer'>View PDF</a>
+                                        <a
+                                            href={hymn.pdfURL}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        >
+                                            View PDF
+                                        </a>
                                     ) : (
-                                        "No PDF "
+                                        'No PDF'
                                     )}
                                 </td>
                             </tr>
-                        );
-                    })}
-                </tbody>
-            </table>
-            <div className='back-to-home-box'>
-                <Link to='/'><button>Back to Home</button></Link>
+                        ))}
+                    </tbody>
+                </table>
+            )}
+
+            <div className="back-to-home-box">
+                <Link to="/">
+                    <button>Back to Home</button>
+                </Link>
             </div>
         </div>
     );
