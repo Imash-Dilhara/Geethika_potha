@@ -13,7 +13,15 @@
     <title>HymnFlow | Home</title>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <div id="loader" class="loader-wrap"><div class="spinner"></div></div>
+
+      <script>
+        window.addEventListener("load", () => {
+          document.getElementById("loader").style.display = "none";
+        });
+      </script>
+    </div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
