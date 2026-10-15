@@ -4,7 +4,7 @@ import { PDFDocument } from 'pdf-lib';
 import PptxGenJS from 'pptxgenjs';
 import * as pdfjsLib from 'pdfjs-dist';
 import pdfWorker from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
-import Loading from '../components/Loading';
+import Loading from '../Loading';
 import '../css/createSlot.css';
 import '../css/viewAllHymn.css';
 
