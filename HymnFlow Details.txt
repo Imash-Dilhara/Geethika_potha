@@ -6,3 +6,10 @@ Brevo API Key : xkeysib-ceb1d1430ef31b7ba3fbfdbdcf6c4aef5a4e0ddb600142558d3543e5
 Db host : Aiven
 Backend host : Render
 Frontend host : vercel
+Hymn PDF : superbase
+		project Name : Hymn PDF
+		password : Ids@2001Dec25
+
+		Project URL : https://retvbfboypvahdzmfefm.supabase.co
+		Secret code : sb_secret_r1Q6bhDNBEkJdd-h1pPcbQ_LA7yOmY3
+

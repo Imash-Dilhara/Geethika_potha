@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const express = require('express');
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
@@ -7,10 +9,16 @@ const fs = require('fs');
 const app = express();
 const db = require('./db');
 const emailRoutes = require('./routes/emailRoutes');
+const { createClient } = require('@supabase/supabase-js');
 
-// JWT secret: Render eke Environment Variable widihata JWT_SECRET danna.
-// Nathnam kalin thibba value eka use wenawa.
-const JWT_SECRET = process.env.JWT_SECRET || 'Ids_1225';
+const JWT_SECRET = process.env.JWT_SECRET;
+
+const supabase = createClient(
+    process.env.SUPABASE_URL,
+    process.env.SUPABASE_SECRET_KEY
+);
+
+const BUCKET = 'hymn-PDF';
 
 app.set('trust proxy', 1);
 
@@ -43,7 +51,6 @@ app.use(cors({
 
 app.use(express.json());
 
-// ===== uploads folder eka hariyata create karanawa (Render eke ENOENT error eka fix) =====
 const uploadDir = path.join(__dirname, 'uploads');
 if (!fs.existsSync(uploadDir)) {
     fs.mkdirSync(uploadDir, { recursive: true });
@@ -51,19 +58,9 @@ if (!fs.existsSync(uploadDir)) {
 
 app.use('/uploads', express.static(uploadDir));
 
-//Multer setup for PDF file
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, uploadDir);
-    },
-    filename: (req, file, cb) => {
-        cb(null, Date.now() + path.extname(file.originalname));
-    }
-});
-
 const upload = multer({
-    storage: storage,
-    limits: { fileSize: 20 * 1024 * 1024 }, // 20MB
+    storage: multer.memoryStorage(),
+    limits: { fileSize: 10 * 1024 * 1024 }, //10MB Limitation PDF size
     fileFilter: (req, file, cb) => {
         if (file.mimetype === 'application/pdf') {
             cb(null, true);
@@ -177,7 +174,7 @@ app.post('/api/login', (req, res) => {
 });
 
 //Add Hymn
-app.post('/api/addhymn', veryfyToken, upload.single('pdf'), (req, res) => {
+app.post('/api/addhymn', veryfyToken, upload.single('pdf'), async(req, res) => {
     const { title, firstName, lastName } = req.body;
     const userId = req.user.id;
     const pdfFile = req.file ? req.file.filename : null;
@@ -194,23 +191,51 @@ app.post('/api/addhymn', veryfyToken, upload.single('pdf'), (req, res) => {
         });
     }
 
-    const query = "INSERT INTO hymns (r_no, title, pdf, singerFname, singerLname, added_date) VALUES (?,?,?,?,?,?)";
-
-    db.query(query, [userId, title, pdfFile, firstName, lastName, nowDate], (e, result) => {
-        if (e) {
-            console.error('Add hymn DB error:', e);
-            return res.status(500).json({
-                success: false,
-                message: 'Database error while adding hymn!'
+    try{
+        //Upload to supabase
+        const fileName = `${pdfFile}.pdf`;
+        const {error : uploadError } = await supabase.storage
+            .from(BUCKET)
+            .upload(fileName , req.file.buffer ,{
+                contentType : 'application/pdf',
+                upsert: false
             });
-        }
 
-        res.status(201).json({
-            success: true,
-            message: 'Hymn added successfully!',
-            hymnId: result.insertId
+            if (uploadError) {
+                console.error('Supabase upload error:', uploadError);
+                return res.status(500).json({
+                    success: false,
+                    message: 'PDF upload failed!'
+                });
+            }
+
+            const { data } = supabase.storage.from(BUCKET).getPublicUrl(fileName);
+            const pdfURL = data.publicUrl;
+            
+            const query = "INSERT INTO hymns (r_no, title, pdf, singerFname, singerLname, added_date) VALUES (?,?,?,?,?,?)";
+
+            db.query(query, [userId, title, pdfURL, firstName, lastName, nowDate], (e, result) => {
+                if (e) {
+                    console.error('Add hymn DB error:', e);
+                    return res.status(500).json({
+                        success: false,
+                        message: 'Database error while adding hymn!'
+                    });
+                }
+        
+                res.status(201).json({
+                    success: true,
+                    message: 'Hymn added successfully!',
+                    hymnId: result.insertId
+                });
+            });
+    }catch(e){
+        console.error(e);
+        res.status(500).json({
+            success:false,
+            message: 'Server Error!'
         });
-    });
+    }
 });
 
 //Get Hymns
@@ -297,7 +322,6 @@ app.post('/api/change-password', (req, res) => {
             return res.status(500).json({ success: false, message: "Can't change the password, Database error!" });
         }
 
-        // FIX: UPDATE query ekata result.length nemei affectedRows check karanna ona
         if (result.affectedRows === 0) {
             return res.status(404).json({ success: false, message: "User not found! Try again." });
         }
@@ -306,12 +330,12 @@ app.post('/api/change-password', (req, res) => {
     });
 });
 
-// ===== 404 handler (API routes walata JSON) =====
+// ===== 404 handler =====
 app.use((req, res) => {
     res.status(404).json({ success: false, message: `Route not found: ${req.method} ${req.originalUrl}` });
 });
 
-// ===== Global error handler (multer, CORS wage errors HTML wenuwata JSON widihata enawa) =====
+// ===== Global error handler =====
 app.use((err, req, res, next) => {
     console.error('Server error:', err);
 
