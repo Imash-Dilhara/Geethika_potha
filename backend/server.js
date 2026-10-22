@@ -208,7 +208,7 @@ app.post('/api/addhymn', veryfyToken, upload.single('pdf'), async(req, res) => {
                     message: 'PDF upload failed!'
                 });
             }
-
+            //Add PDF url to DB
             const { data } = supabase.storage.from(BUCKET).getPublicUrl(fileName);
             const pdfURL = data.publicUrl;
             
@@ -248,11 +248,9 @@ app.get('/api/getallhymns', (req, res) => {
             return res.status(500).json({ error: "Database error!" });
         }
 
-        const baseURL = `${req.protocol}://${req.get('host')}`;
-
         const hymnWithPDFURL = result.map(hymn => ({
             ...hymn,
-            pdfURL: hymn.pdf ? `${baseURL}/uploads/${hymn.pdf}` : null
+            pdfURL: hymn.pdf && hymn.pdf.startsWith('http') ? hymn.pdf : null
         }));
 
         res.json(hymnWithPDFURL);
@@ -294,11 +292,10 @@ app.get('/api/searchhymns', (req, res) => {
             console.error("Error searching hymn : ", e);
             return res.status(500).json({ error: 'Database Error!' });
         }
-
-        const baseURL = `${req.protocol}://${req.get('host')}`;
+        
         const hymnWithPDFURL = result.map(hymn => ({
             ...hymn,
-            pdfURL: hymn.pdf ? `${baseURL}/uploads/${hymn.pdf}` : null
+            pdfURL: hymn.pdf && hymn.pdf.startsWith('http') ? hymn.pdf : null
         }));
 
         res.json(hymnWithPDFURL);
