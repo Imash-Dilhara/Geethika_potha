@@ -3,68 +3,93 @@ const cors = require('cors');
 const jwt = require('jsonwebtoken');
 const multer = require('multer');
 const path = require('path');
+const fs = require('fs');
 const app = express();
 const db = require('./db');
 const emailRoutes = require('./routes/emailRoutes');
 
-app.set('trust proxy' , 1);
+// JWT secret: Render eke Environment Variable widihata JWT_SECRET danna.
+// Nathnam kalin thibba value eka use wenawa.
+const JWT_SECRET = process.env.JWT_SECRET || 'Ids_1225';
+
+app.set('trust proxy', 1);
 
 //=========Test case ============
+app.get('/', (req, res) => {
+    res.send('Server is running!');
+});
+
 app.get('/api/test', (req, res) => {
-  res.json({ message: "Backend is working!" });
+    res.json({ message: "Backend is working!" });
 });
 //============================
 
 const allowedOrigins = [
-  'http://localhost:5173',
-  'https://hymnflow.vercel.app'
+    'http://localhost:5173',
+    'https://hymnflow.vercel.app'
 ];
 
-//CORS 
+//CORS
 app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  credentials: true
+    origin: function (origin, callback) {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+    credentials: true
 }));
 
 app.use(express.json());
 
-app.use('/uploads' , express.static(path.join(__dirname , 'uploads')));
+// ===== uploads folder eka hariyata create karanawa (Render eke ENOENT error eka fix) =====
+const uploadDir = path.join(__dirname, 'uploads');
+if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir, { recursive: true });
+}
 
-//Multer strp for PDF file
+app.use('/uploads', express.static(uploadDir));
+
+//Multer setup for PDF file
 const storage = multer.diskStorage({
-    destination: (req, file , cd) => {
-        cd(null, 'uploads/');
+    destination: (req, file, cb) => {
+        cb(null, uploadDir);
     },
-    filename : (req , file , cd) => {
-        cd(null , Date.now() + path.extname(file.originalname));
+    filename: (req, file, cb) => {
+        cb(null, Date.now() + path.extname(file.originalname));
     }
 });
 
-const upload = multer({storage : storage});
+const upload = multer({
+    storage: storage,
+    limits: { fileSize: 20 * 1024 * 1024 }, // 20MB
+    fileFilter: (req, file, cb) => {
+        if (file.mimetype === 'application/pdf') {
+            cb(null, true);
+        } else {
+            cb(new Error('Only PDF files are allowed!'));
+        }
+    }
+});
 
 //Token verify middleware
-const veryfyToken = (req,res,next) => {
+const veryfyToken = (req, res, next) => {
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
 
-    if(!token){
+    if (!token) {
         return res.status(401).json({
-            success : false,
+            success: false,
             message: 'Access denied! No token provided.'
         });
     }
 
-    jwt.verify(token,'Ids_1225',(e,user) => {
-        if(e){
+    jwt.verify(token, JWT_SECRET, (e, user) => {
+        if (e) {
             return res.status(403).json({
-                success : false,
-                message : 'Invalid or expire token!'
+                success: false,
+                message: 'Invalid or expire token!'
             });
         }
         req.user = user;
@@ -73,7 +98,7 @@ const veryfyToken = (req,res,next) => {
 };
 
 //Register
-app.post('/api/register', async (req, res) => {
+app.post('/api/register', (req, res) => {
     const { fname, lname, email, password } = req.body;
 
     if (!fname || !email || !password) {
@@ -89,9 +114,9 @@ app.post('/api/register', async (req, res) => {
         }
 
         const token = jwt.sign({
-            id: result.insertId , 
+            id: result.insertId,
             email
-        } , 'Ids_1225' , {expiresIn: '2h'});
+        }, JWT_SECRET, { expiresIn: '2h' });
 
         res.status(201).json({
             message: "User successfully registered",
@@ -106,22 +131,23 @@ app.post('/api/register', async (req, res) => {
 });
 
 //Login
-app.post('/api/login' , (req,res) => {
-    const {email , password} = req.body;
+app.post('/api/login', (req, res) => {
+    const { email, password } = req.body;
 
     const sql = "SELECT * FROM register WHERE email = ?";
-    db.query(sql , [email] , async(e ,result) => {
-        if(e){
+    db.query(sql, [email], (e, result) => {
+        if (e) {
+            console.error(e);
             return res.status(500).json({
-                success:false,
-                message:'Database Error!'
+                success: false,
+                message: 'Database Error!'
             });
         }
 
-        if(result.length === 0){
+        if (result.length === 0) {
             return res.status(401).json({
-                success:false,
-                message:'Invalid email or password!'
+                success: false,
+                message: 'Invalid email or password!'
             });
         }
 
@@ -129,7 +155,7 @@ app.post('/api/login' , (req,res) => {
 
         const isPasswordMatch = (password === user.password);
 
-        if(!isPasswordMatch){
+        if (!isPasswordMatch) {
             return res.status(401).json({
                 success: false,
                 message: 'Invalid email or password'
@@ -139,62 +165,62 @@ app.post('/api/login' , (req,res) => {
         const token = jwt.sign({
             id: user.r_no,
             email: user.email
-        } , 'Ids_1225' , {expiresIn: '2h'});
+        }, JWT_SECRET, { expiresIn: '2h' });
 
         res.status(200).json({
             success: true,
             message: 'Login successful!',
             token,
-            user:{id:user.r_no , name:user.fname, email:user.email}
+            user: { id: user.r_no, name: user.fname, email: user.email }
         });
     });
 });
 
 //Add Hymn
-app.post('/api/addhymn' ,veryfyToken,upload.single('pdf'),(req,res) => {
-    const {title , firstName , lastName} = req.body;
+app.post('/api/addhymn', veryfyToken, upload.single('pdf'), (req, res) => {
+    const { title, firstName, lastName } = req.body;
     const userId = req.user.id;
-    const pdfFile = req.file ?req.file.filename : null ;
+    const pdfFile = req.file ? req.file.filename : null;
     const date = new Date();
     const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2,'0');
-    const day = String(date.getDate()).padStart(2,'0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
     const nowDate = `${year}-${month}-${day}`;
 
-    if(!title || !pdfFile){
+    if (!title || !pdfFile) {
         return res.status(400).json({
-            success:false,
-            message:'Title and PDF file are required!'
+            success: false,
+            message: 'Title and PDF file are required!'
         });
     }
 
-    const query = "INSERT INTO hymns (r_no , title , pdf , singerFname , singerLname , added_date) VALUES (?,?,?,?,?,?)";
+    const query = "INSERT INTO hymns (r_no, title, pdf, singerFname, singerLname, added_date) VALUES (?,?,?,?,?,?)";
 
-    db.query(query , [userId , title , pdfFile , firstName , lastName , nowDate] , (e,result) => {
-        if(e){
-            console.error(e);
+    db.query(query, [userId, title, pdfFile, firstName, lastName, nowDate], (e, result) => {
+        if (e) {
+            console.error('Add hymn DB error:', e);
             return res.status(500).json({
-                success:false,
-                message:'Database error while adding hymn!'
+                success: false,
+                message: 'Database error while adding hymn!'
             });
         }
 
         res.status(201).json({
-            success:true,
-            message:'Hymn added successfully!',
+            success: true,
+            message: 'Hymn added successfully!',
             hymnId: result.insertId
         });
     });
 });
 
 //Get Hymns
-app.get('/api/getallhymns' ,(req,res) => { 
+app.get('/api/getallhymns', (req, res) => {
     const query = "SELECT * FROM hymns ORDER BY title ASC";
 
-    db.query(query , (e,result) => {
-        if(e){
-            console.error("Error fetching hymns : ",e);
-            return res.status(500).json({error : "Database error!"});
+    db.query(query, (e, result) => {
+        if (e) {
+            console.error("Error fetching hymns : ", e);
+            return res.status(500).json({ error: "Database error!" });
         }
 
         const baseURL = `${req.protocol}://${req.get('host')}`;
@@ -209,19 +235,18 @@ app.get('/api/getallhymns' ,(req,res) => {
 });
 
 //Check email
-app.post('/api/allemail' , (req,res) => {
-
+app.post('/api/allemail', (req, res) => {
     const { email } = req.body;
 
     const query = "SELECT * FROM register WHERE email = ?";
 
-    db.query(query, [email] , (e,result) => {
-        if(e){
-            console.error("Error fetching hymns : ",e);
-            return res.status(500).json({error : "Database error!"});
+    db.query(query, [email], (e, result) => {
+        if (e) {
+            console.error("Error checking email : ", e);
+            return res.status(500).json({ error: "Database error!" });
         }
 
-        if(result.length === 0){
+        if (result.length === 0) {
             return res.status(200).json(false);
         }
         res.status(200).json(true);
@@ -229,20 +254,20 @@ app.post('/api/allemail' , (req,res) => {
 });
 
 //Search Hymn
-app.get('/api/searchhymns' , (req,res) => {
-    const {search} = req.query;
+app.get('/api/searchhymns', (req, res) => {
+    const { search } = req.query;
 
-    if(!search){
-        return res.status(400).json({error : "Search term is reqiured!"});
+    if (!search) {
+        return res.status(400).json({ error: "Search term is reqiured!" });
     }
 
-    const query = "SELECT * FROM hymns WHERE title LIKE ? ORDER BY  title ASC";
-    const searchTerm  = `%${search}%`;
+    const query = "SELECT * FROM hymns WHERE title LIKE ? ORDER BY title ASC";
+    const searchTerm = `%${search}%`;
 
-    db.query(query , [searchTerm] , (e,result) => {
-        if(e){
-            console.error("Error searching hymn : " , e);
-            return res.status(500).json({error: 'Database Error!'});
+    db.query(query, [searchTerm], (e, result) => {
+        if (e) {
+            console.error("Error searching hymn : ", e);
+            return res.status(500).json({ error: 'Database Error!' });
         }
 
         const baseURL = `${req.protocol}://${req.get('host')}`;
@@ -255,35 +280,53 @@ app.get('/api/searchhymns' , (req,res) => {
     });
 });
 
-app.use('/api' , emailRoutes);
+app.use('/api', emailRoutes);
 
 //Change password
-app.post('/api/change-password' , (req,res) => {
-    const { id , newPassword } = req.body;
+app.post('/api/change-password', (req, res) => {
+    const { id, newPassword } = req.body;
 
-    if(!id || !newPassword){
-        return res.status(400).json({success: false , message:"Canot found user or password required."});
+    if (!id || !newPassword) {
+        return res.status(400).json({ success: false, message: "Canot found user or password required." });
     }
 
-    try{
-        const query = 'UPDATE register SET password = ? WHERE r_no = ?';
-        db.query(query , [newPassword , id] , (err , result) => {
-            if(err){
-                console.error("Can't change password : ", err);
-                return res.status(500).json({success: false , message: "Can't change the password, Database error!"});
-            }
+    const query = 'UPDATE register SET password = ? WHERE r_no = ?';
+    db.query(query, [newPassword, id], (err, result) => {
+        if (err) {
+            console.error("Can't change password : ", err);
+            return res.status(500).json({ success: false, message: "Can't change the password, Database error!" });
+        }
 
-            if(result.length === 0){
-                return res.status(404).json({success:false , message:"User not found! Try again."});
-            }
+        // FIX: UPDATE query ekata result.length nemei affectedRows check karanna ona
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ success: false, message: "User not found! Try again." });
+        }
 
-            return res.status(200).json({success: true , message: "Password change successfully!"});
-        });
-    }catch(e){
-        return res.status(500).json({success:false , message: "Password change database error!"});
-    }
+        return res.status(200).json({ success: true, message: "Password change successfully!" });
+    });
 });
 
-app.listen(5000 , () => {
-    console.log("Server is running");
+// ===== 404 handler (API routes walata JSON) =====
+app.use((req, res) => {
+    res.status(404).json({ success: false, message: `Route not found: ${req.method} ${req.originalUrl}` });
+});
+
+// ===== Global error handler (multer, CORS wage errors HTML wenuwata JSON widihata enawa) =====
+app.use((err, req, res, next) => {
+    console.error('Server error:', err);
+
+    if (err instanceof multer.MulterError) {
+        return res.status(400).json({ success: false, message: err.message });
+    }
+
+    if (err.message === 'Not allowed by CORS') {
+        return res.status(403).json({ success: false, message: err.message });
+    }
+
+    res.status(500).json({ success: false, message: err.message || 'Internal Server Error' });
+});
+
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+    console.log("Server is running on port " + PORT);
 });
