@@ -245,7 +245,7 @@ app.get('/api/getallhymns', (req, res) => {
 
         const hymnWithPDFURL = result.map(hymn => ({
             ...hymn,
-            pdfURL: hymn.pdf && hymn.pdf.startsWith('http') ? hymn.pdf : null
+            pdfURL: typeof hymn.pdf === 'string' && hymn.pdf.startsWith('http') ? hymn.pdf : null
         }));
 
         res.json(hymnWithPDFURL);
@@ -290,7 +290,7 @@ app.get('/api/searchhymns', (req, res) => {
 
         const hymnWithPDFURL = result.map(hymn => ({
             ...hymn,
-            pdfURL: hymn.pdf && hymn.pdf.startsWith('http') ? hymn.pdf : null
+            pdfURL: typeof hymn.pdf === 'string' && hymn.pdf.startsWith('http') ? hymn.pdf : null
         }));
 
         res.json(hymnWithPDFURL);
