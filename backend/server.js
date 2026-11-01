@@ -83,7 +83,7 @@ const veryfyToken = (req, res, next) => {
         if (e) {
             return res.status(403).json({
                 success: false,
-                message: 'Invalid or expire token!'
+                message: 'Logout & Login again!'
             });
         }
         req.user = user;
